@@ -1,0 +1,36 @@
+Achei16
+
+Dashboards
+Administrador: Clientes / Estabelecimentos / Vendedores / Vendas / Estabelecimentos por Cidade
+Vendedores: Estabelecimentos / Vendas
+Cliente: Visitas / Contatos / Data de expiração ou dias para expirar
+
+
+
+
+Pacotes:
+Título / Descrição / Valor / Validade (anual/semestral/mensal) / Contrato / Status
+
+Vendedores:
+Nome / E-mail / Senha / CPF / RG / Data Nascimento / Telefone / Endereço / Comissão(%) / Status
+
+Contratos
+Nome / Descrição (com formatação) / Status
+
+Empresas -> Clientes (PJ/PF)
+Nome ou Razão Social / CPF CNPJ / E-mail / Telefone(2) / Endereço / Responsável / E-mail / Senha / Status
+*obs: salvar usuario que cadastrou, data/hora do cadastro
+
+Estabelecimento
+Seleciona: Cliente
+Nome / Descrição / Categoria / Sub-categoria / Telefone (WhatsApp ou Comercial) / Horário de Atendimento / Endereço / E-mail / Site / Redes Sociais (facebook/instagram/youtube/Google Meu Negócio) / Aplicativo (ifood/waze/olx etc) / Formas de Pagamentos / Tags / Imagem Destaque / Imagens adicionais / Status Destaque / Status 24h / Status
+*obs: salvar usuario que cadastrou, data/hora do cadastro
+
+
+
+Vendas
+Seleciona: Cliente / Estabelecimento / Pacote
+*obs: salvar usuario que cadastrou, data/hora do cadastro
+
+Site
+Para administrador os dados do site, pagina inicial… contato e quem somos.
