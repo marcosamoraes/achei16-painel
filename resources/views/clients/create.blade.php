@@ -101,7 +101,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="phone2"
-                            :value="__('Telefone 2')"
+                            :value="__('Whatsapp')"
                         />
 
                         <x-form.input

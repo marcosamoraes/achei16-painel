@@ -17,8 +17,8 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $initialDate = $request->initial_date ?? now()->subDays(30)->format('Y-m-d');
-        $finalDate = $request->final_date ?? now()->format('Y-m-d');
+        $initialDate = $request->initial_date ?? now()->subDays(30)->startOfDay()->format('Y-m-d');
+        $finalDate = $request->final_date ?? now()->endOfDay()->format('Y-m-d');
 
         if (auth()->user()->role === UserRoleEnum::Admin->value) {
             return $this->getAdminDashboard($initialDate, $finalDate);

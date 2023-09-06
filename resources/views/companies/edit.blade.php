@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="phone2" :value="__('Telefone 2')" />
+                        <x-form.label for="phone2" :value="__('Whatsapp')" />
 
                         <x-form.input id="phone2" name="phone2" type="text" class="block w-full"
                             :value="old('phone2', $company->phone2)" x-mask:dynamic="phoneMask" autofocus autocomplete="phone2" />
