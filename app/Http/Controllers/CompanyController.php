@@ -62,7 +62,7 @@ class CompanyController extends Controller
 
             $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
 
-            $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+            $validated['slug'] = Str::slug($validated['name']);
 
             $company = Company::create($validated);
 
@@ -128,7 +128,7 @@ class CompanyController extends Controller
                 $validated['images'] = $images;
             }
 
-            $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+            $validated['slug'] = Str::slug($validated['name']);
 
             $company->update($validated);
 

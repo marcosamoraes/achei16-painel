@@ -77,11 +77,11 @@ class Company extends Model
         parent::boot();
 
         self::creating(function ($company) {
-            $company->slug = Str::slug($company->name) . '-' . Str::random(5);
+            $company->slug = Str::slug($company->name);
         });
 
         self::updating(function ($company) {
-            $company->slug = Str::slug($company->name) . '-' . Str::random(5);
+            $company->slug = Str::slug($company->name);
         });
     }
 
