@@ -6,12 +6,15 @@ use App\Http\Requests\StoreSellerRequest;
 use App\Http\Requests\UpdateSellerRequest;
 use App\Models\Seller;
 use App\Models\User;
+use App\Notifications\SellerCreated;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class SellerController extends Controller
 {
@@ -40,14 +43,20 @@ class SellerController extends Controller
         try {
             $validated = $request->validated();
 
+            $password = Str::random(8);
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => Hash::make('123456'),
+                'password' => Hash::make($password),
             ]);
 
             $validated['seller']['user_id'] = $user->id;
+
             Seller::create($validated['seller']);
+
+            $user->assignRole('seller');
+
+            $user->notify(new SellerCreated($password));
 
             Alert::toast('Vendedor cadastrado com sucesso.', 'success');
             return Redirect::route('sellers.index');
