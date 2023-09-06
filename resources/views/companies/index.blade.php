@@ -3,7 +3,9 @@
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             Empresas
         </h2>
-        <a href="{{ route('companies.create') }}"><x-button>Cadastrar</x-button></a>
+        @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
+            <a href="{{ route('companies.create') }}"><x-button>Cadastrar</x-button></a>
+        @endif
     </x-slot>
 
     <div class="py-12">
@@ -17,12 +19,16 @@
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">ID</span>
                                 </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vendedor</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Cliente</span>
-                                </th>
+                                @if (auth()->user()->role === 'admin')
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vendedor</span>
+                                    </th>
+                                @endif
+                                @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Cliente</span>
+                                    </th>
+                                @endif
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Nome</span>
                                 </th>
@@ -47,12 +53,16 @@
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         {{ $company->id }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        {{ $company->user?->name ?? 'Sem vendedor' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        {{ $company->client->user->name }}
-                                    </td>
+                                    @if (auth()->user()->role === 'admin')
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            {{ $company->user?->name ?? 'Sem vendedor' }}
+                                        </td>
+                                    @endif
+                                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            {{ $company->client->user->name }}
+                                        </td>
+                                    @endif
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         {{ $company->name }}
                                     </td>
@@ -76,13 +86,15 @@
                                                 <i class="fas fa-edit"></i>
                                             </x-button>
                                         </a>
-                                        <form method="POST" action="{{ route('companies.destroy', $company->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button variant="danger" onclick="if (!confirm('Você tem certeza que quer deletar?')) return false">
-                                                <i class="fas fa-trash"></i>
-                                            </x-button>
-                                        </form>
+                                        @if (auth()->user()->role === 'admin')
+                                            <form method="POST" action="{{ route('companies.destroy', $company->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-button variant="danger" onclick="if (!confirm('Você tem certeza que quer deletar?')) return false">
+                                                    <i class="fas fa-trash"></i>
+                                                </x-button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

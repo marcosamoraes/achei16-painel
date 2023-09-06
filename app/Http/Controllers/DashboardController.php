@@ -6,6 +6,7 @@ use App\Http\Enums\OrderStatusEnum;
 use App\Http\Enums\UserRoleEnum;
 use App\Models\Client;
 use App\Models\Company;
+use App\Models\Contact;
 use App\Models\Order;
 use App\Models\Seller;
 use Illuminate\Http\Request;
@@ -88,8 +89,9 @@ class DashboardController extends Controller
 
     private function getClientDashboard($initialDate, $finalDate)
     {
-        $countVisits = 0;
-        $countContacts = 0;
+        $client = Client::where('user_id', auth()->id())->firstOrFail();
+        $countVisits = $client->total_visits;
+        $countContacts = Contact::where('user_id', auth()->id())->count();
 
         return view('dashboard', compact('countVisits', 'countContacts'));
     }

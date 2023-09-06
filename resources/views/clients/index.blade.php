@@ -20,24 +20,29 @@
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Nome</span>
                                 </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">E-mail</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">CPF/CNPJ</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Telefone</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Ações</span>
-                                </th>
+                                @if (auth()->user()->role === 'admin')
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Empresa</span>
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">E-mail</span>
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">CPF/CNPJ</span>
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Telefone</span>
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
+                                    </th>
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Ações</span>
+                                    </th>
+                                @endif
                             </tr>
                             </thead>
 
@@ -50,40 +55,42 @@
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         {{ $client->user->name }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        {{ $client->user->email }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        {{ $client->cpf_cnpj }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        {{ $client->phone }}<br />
-                                        {{ $client->phone2 }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        @if ($client->user->status)
-                                            <span class="text-green-500">Ativo</span>
-                                        @else
-                                            <span class="text-red-500">Inativo</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                        {{ $client->created_at?->format('d/m/Y H:i:s') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
-                                        <a href="{{ route('clients.edit', $client->id) }}">
-                                            <x-button variant="warning">
-                                                <i class="fas fa-edit"></i>
-                                            </x-button>
-                                        </a>
-                                        <form method="POST" action="{{ route('clients.destroy', $client->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <x-button variant="danger" onclick="if (!confirm('Você tem certeza que quer deletar?')) return false">
-                                                <i class="fas fa-trash"></i>
-                                            </x-button>
-                                        </form>
-                                    </td>
+                                    @if (auth()->user()->role === 'admin')
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            {{ $client->user->email }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            {{ $client->cpf_cnpj }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            {{ $client->phone }}<br />
+                                            {{ $client->phone2 }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            @if ($client->user->status)
+                                                <span class="text-green-500">Ativo</span>
+                                            @else
+                                                <span class="text-red-500">Inativo</span>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
+                                            {{ $client->created_at?->format('d/m/Y H:i:s') }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                            <a href="{{ route('clients.edit', $client->id) }}">
+                                                <x-button variant="warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </x-button>
+                                            </a>
+                                            <form method="POST" action="{{ route('clients.destroy', $client->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <x-button variant="danger" onclick="if (!confirm('Você tem certeza que quer deletar?')) return false">
+                                                    <i class="fas fa-trash"></i>
+                                                </x-button>
+                                            </form>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>

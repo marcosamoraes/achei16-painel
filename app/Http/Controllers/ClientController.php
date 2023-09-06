@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
+use App\Http\Requests\UpdateSettingsClientRequest;
 use App\Models\Client;
 use App\Models\User;
+use App\Notifications\ClientCreated;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class ClientController extends Controller
 {
@@ -40,14 +43,18 @@ class ClientController extends Controller
         try {
             $validated = $request->validated();
 
+            $password = Str::random(8);
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
-                'password' => Hash::make('123456'),
+                'password' => Hash::make($password),
             ]);
 
             $validated['client']['user_id'] = $user->id;
+
             Client::create($validated['client']);
+
+            $user->notify(new ClientCreated($password));
 
             Alert::toast('Cliente cadastrado com sucesso.', 'success');
             return Redirect::route('clients.index');
@@ -99,5 +106,34 @@ class ClientController extends Controller
         $client->user->update(['status' => 0]);
         Alert::toast('Cliente deletado com sucesso.', 'success');
         return back();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function settings()
+    {
+        $client = Client::where('user_id', auth()->id())->first();
+        return view('settings', compact('client'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function updateSettings(UpdateSettingsClientRequest $request)
+    {
+        $client = Client::where('user_id', auth()->id())->first();
+        try {
+            $validated = $request->validated();
+
+            $client->update($validated);
+
+            Alert::toast('Dados editados com sucesso.', 'success');
+            return Redirect::route('settings');
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            Alert::toast('Falha ao editar dados.', 'error');
+            return back()->withInput();
+        }
     }
 }

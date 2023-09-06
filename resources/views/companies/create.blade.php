@@ -16,31 +16,35 @@
                     </h2>
                 </header>
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
-                    <div class="space-y-2">
-                        <x-form.label
-                            for="client_id"
-                            :value="__('Cliente')"
-                        />
+                <div class="mb-5 grid grid-cols-1 {{ auth()->user()->role === 'user' ? 'sm:grid-cols-3' : 'sm:grid-cols-4' }} gap-y-6 gap-x-4">
+                    @if (auth()->user()->role === 'user')
+                        <input type="hidden" name="client_id" value="{{ auth()->id() }}">
+                    @else
+                        <div class="space-y-2">
+                            <x-form.label
+                                for="client_id"
+                                :value="__('Cliente')"
+                            />
 
-                        <x-form.select
-                            id="client_id"
-                            name="client_id"
-                            type="text"
-                            class="block w-full"
-                            :value="old('client_id')"
-                            required
-                            autofocus
-                            autocomplete="client_id"
-                        >
-                            <option value="">Selecione</option>
-                            @foreach ( $clients as $client )
-                                <option value="{{ $client->id }}" {{ old('client_id') === $client->id ? 'selected' : false }}>{{ $client->user->name }}</option>
-                            @endforeach
-                        </x-form.select>
+                            <x-form.select
+                                id="client_id"
+                                name="client_id"
+                                type="text"
+                                class="block w-full"
+                                :value="old('client_id')"
+                                required
+                                autofocus
+                                autocomplete="client_id"
+                            >
+                                <option value="">Selecione</option>
+                                @foreach ( $clients as $client )
+                                    <option value="{{ $client->id }}" {{ old('client_id') === $client->id ? 'selected' : false }}>{{ $client->user->name }}</option>
+                                @endforeach
+                            </x-form.select>
 
-                        <x-form.error :messages="$errors->get('client_id')" />
-                    </div>
+                            <x-form.error :messages="$errors->get('client_id')" />
+                        </div>
+                    @endif
 
                     <div class="space-y-2">
                         <x-form.label for="name" :value="__('Nome')" />

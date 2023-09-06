@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
@@ -60,6 +61,8 @@ class CompanyController extends Controller
             }
 
             $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
+
+            $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
 
             $company = Company::create($validated);
 
@@ -125,6 +128,8 @@ class CompanyController extends Controller
                 $validated['images'] = $images;
             }
 
+            $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
+
             $company->update($validated);
 
             $company->categories()->detach();
@@ -146,7 +151,7 @@ class CompanyController extends Controller
             DB::rollBack();
             Log::error($e->getMessage());
             Alert::toast('Falha ao editar empresa.', 'error');
-            return back()->withInput();
+            return back()->withInput()->withErrors($e->getMessage());
         }
     }
 

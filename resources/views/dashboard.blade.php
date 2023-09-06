@@ -11,30 +11,32 @@
         <div class="px-4 md:px-10 mx-auto w-full">
             <div>
                 <div class="flex flex-wrap">
-                    <div class="w-full mb-10 px-4">
-                        <form class="flex gap-5">
-                            <div>
-                                <label class="block uppercase text-xs font-bold mb-2"
-                                    for="initial_date">Data Inicial</label>
-                                <input type="date" id="initial_date" name="initial_date" value="{{ request()->initial_date ?? now()->subDays(30)->format('Y-m-d') }}"
-                                    class="border-0 px-3 py-3 text-black bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"/>
-                            </div>
-                            <div>
-                                <label class="block uppercase text-xs font-bold mb-2"
-                                    for="final_date">Data Final</label>
-                                <input type="date" id="final_date" name="final_date" value="{{ request()->final_date ?? now()->format('Y-m-d') }}"
-                                    class="border-0 px-3 py-3 text-black placeholder-dark bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"/>
-                            </div>
-                            <div>
-                                <button
-                                    class="bg-primary-500 text-white mt-6 active:bg-primary-500 font-bold uppercase text-xs px-4 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1"
-                                    type="submit" style="transition: all 0.15s ease">
-                                    <i class="fas fa-search"></i> Buscar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="w-full"></div>
+                    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
+                        <div class="w-full mb-10 px-4">
+                            <form class="flex gap-5">
+                                <div>
+                                    <label class="block uppercase text-xs font-bold mb-2"
+                                        for="initial_date">Data Inicial</label>
+                                    <input type="date" id="initial_date" name="initial_date" value="{{ request()->initial_date ?? now()->subDays(30)->format('Y-m-d') }}"
+                                        class="border-0 px-3 py-3 text-black bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"/>
+                                </div>
+                                <div>
+                                    <label class="block uppercase text-xs font-bold mb-2"
+                                        for="final_date">Data Final</label>
+                                    <input type="date" id="final_date" name="final_date" value="{{ request()->final_date ?? now()->format('Y-m-d') }}"
+                                        class="border-0 px-3 py-3 text-black placeholder-dark bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"/>
+                                </div>
+                                <div>
+                                    <button
+                                        class="bg-primary-500 text-white mt-6 active:bg-primary-500 font-bold uppercase text-xs px-4 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1"
+                                        type="submit" style="transition: all 0.15s ease">
+                                        <i class="fas fa-search"></i> Buscar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="w-full"></div>
+                    @endif
                     @if (auth()->user()->role === 'admin')
                         <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
                             <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">

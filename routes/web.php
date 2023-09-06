@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
     });
 
     Route::resource('companies', CompanyController::class);
+    Route::get('/settings', [ClientController::class, 'settings'])->name('settings');
+    Route::put('/settings', [ClientController::class, 'updateSettings'])->name('settings.update');
 
     Route::middleware("role:{$admin}|{$seller}")->group(function () {
         Route::resource('clients', ClientController::class);

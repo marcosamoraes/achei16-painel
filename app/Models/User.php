@@ -61,4 +61,28 @@ class User extends Authenticatable
     {
         return Attribute::get(fn () => $this->roles[0]?->name ?? 'user');
     }
+
+    /**
+     * Get the clients for the user.
+     */
+    public function clients()
+    {
+        return $this->hasMany(Client::class);
+    }
+
+    /**
+     * Get the companies for the user.
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the contacts for the user.
+     */
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class);
+    }
 }

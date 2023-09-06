@@ -32,7 +32,7 @@ class UpdateCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:clients,id',
+            'client_id' => 'nullable|exists:clients,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'phone' => 'nullable|string|max:255',

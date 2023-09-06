@@ -79,12 +79,16 @@
     @endif
 
     @if (auth()->user()->role === 'user')
-        <x-sidebar.link title="Meus Dados" href="#">
+        <x-sidebar.link
+            title="Meus Dados"
+            href="{{ route('settings') }}"
+            :isActive="request()->routeIs('settings')"
+        >
             <x-slot name="icon">
                 <i class="fa fa-user" aria-hidden="true"></i>
             </x-slot>
         </x-sidebar.link>
-        <x-sidebar.link title="Contrato" href="#">
+        <x-sidebar.link title="Contatos" href="#">
             <x-slot name="icon">
                 <i class="fa fa-file" aria-hidden="true"></i>
             </x-slot>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Company extends Model
 {
@@ -20,6 +21,7 @@ class Company extends Model
         'user_id',
         'client_id',
         'name',
+        'slug',
         'description',
         'phone',
         'phone2',
@@ -45,6 +47,7 @@ class Company extends Model
         'image',
         'images',
         'featured',
+        'visits',
         'status',
     ];
 
@@ -68,6 +71,19 @@ class Company extends Model
         'image_url',
         'images_url',
     ];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($company) {
+            $company->slug = Str::slug($company->name) . '-' . Str::random(5);
+        });
+
+        self::updating(function ($company) {
+            $company->slug = Str::slug($company->name) . '-' . Str::random(5);
+        });
+    }
 
     protected function imageUrl(): Attribute
     {
