@@ -14,7 +14,6 @@ class Pack extends Model
         'contract_id',
         'title',
         'description',
-        'value',
         'validity',
         'status',
     ];

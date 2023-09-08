@@ -50,13 +50,13 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
 
     Route::middleware("role:{$admin}|{$seller}")->group(function () {
         Route::resource('clients', ClientController::class);
-        Route::resource('orders', OrderController::class)->only(['index']);
+        Route::resource('orders', OrderController::class)->except(['destroy']);
     });
 
-    Route::middleware("role:{$client}")->group(function () {
-        Route::get('/settings', [ClientController::class, 'settings'])->name('settings');
-        Route::put('/settings', [ClientController::class, 'updateSettings'])->name('settings.update');
-    });
+    Route::get('/settings', [ClientController::class, 'settings'])->name('settings');
+    Route::put('/settings', [ClientController::class, 'updateSettings'])->name('settings.update');
 });
+
+Route::get('/payments/webhook', [OrderController::class, 'paymentWebhook'])->name('webhook');
 
 require __DIR__ . '/auth.php';

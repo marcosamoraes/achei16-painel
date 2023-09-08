@@ -1,8 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
-            Pedidos
+            Vendas
         </h2>
+        <a href="{{ route('orders.create') }}"><x-button>Cadastrar</x-button></a>
     </x-slot>
 
     <div class="py-12">
@@ -16,9 +17,11 @@
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">ID</span>
                                 </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vendedor</span>
-                                </th>
+                                @if (auth()->user()->role === 'admin')
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vendedor</span>
+                                    </th>
+                                @endif
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Empresa</span>
                                 </th>
@@ -26,7 +29,10 @@
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Pacote</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Total</span>
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Valor</span>
+                                </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vence em</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
@@ -37,6 +43,11 @@
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
                                 </th>
+                                @if (auth()->user()->role === 'admin')
+                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
+                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Ações</span>
+                                    </th>
+                                @endif
                             </tr>
                             </thead>
 
@@ -46,9 +57,11 @@
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         {{ $order->id }}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        {{ $order->user->name ?? 'Sem vendedor' }}
-                                    </td>
+                                    @if (auth()->user()->role === 'admin')
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                            {{ $order->user->name ?? 'Sem vendedor' }}
+                                        </td>
+                                    @endif
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         {{ $order->company->name }}
                                     </td>
@@ -56,7 +69,10 @@
                                         {{ $order->pack->title }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        R$ {{ number_format($order->pack->total, 2, ',', '.') }}
+                                        R$ {{ number_format($order->value, 2, ',', '.') }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
+                                        {{ $order->expire_at?->format('d/m/Y') ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         @if ($order->status === 'pending')
@@ -81,6 +97,22 @@
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         {{ $order->created_at?->format('d/m/Y H:i:s') }}
                                     </td>
+                                    @if (auth()->user()->role === 'admin')
+                                        <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                            @if ($order->status === 'pending' && $order->payment_code)
+                                                <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $order->payment_code }}" target="_blank">
+                                                    <x-button variant="info" title="link para pagamento">
+                                                        <i class="fas fa-money-bill"></i>
+                                                    </x-button>
+                                                </a>
+                                            @endif
+                                            <a href="{{ route('orders.edit', $order->id) }}">
+                                                <x-button variant="warning">
+                                                    <i class="fas fa-edit"></i>
+                                                </x-button>
+                                            </a>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                             </tbody>

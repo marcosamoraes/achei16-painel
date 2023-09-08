@@ -24,9 +24,6 @@
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Título</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Valor</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Validade</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
@@ -54,9 +51,6 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         {{ $pack->title }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        R$ {{ number_format($pack->value, 2, ',', '.') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         {{ $pack->validity }}

@@ -23,7 +23,7 @@ class UpdateContractRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string',
             'status' => 'required|boolean',
         ];
     }

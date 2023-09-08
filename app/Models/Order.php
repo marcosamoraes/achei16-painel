@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,13 +17,17 @@ class Order extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'uuid',
         'user_id',
         'company_id',
         'pack_id',
-        'total',
+        'value',
         'status',
+        'payment_code',
+        'contract_url',
         'approved_at',
         'canceled_at',
+        'expire_at'
     ];
 
     /**
@@ -33,7 +38,26 @@ class Order extends Model
     protected $casts = [
         'approved_at' => 'datetime',
         'canceled_at' => 'datetime',
+        'expire_at' => 'datetime',
     ];
+
+    public function getExpireAt()
+    {
+        $days = 0;
+        switch ($this->pack->validity) {
+            case 'Mensal':
+                $days = 30;
+                break;
+            case 'Semestral':
+                $days = 180;
+                break;
+            case 'Anual':
+                $days = 365;
+                break;
+        }
+
+        return now()->addDays($days);
+    }
 
     /**
      * Get the user that owns the order.

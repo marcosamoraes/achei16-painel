@@ -14,7 +14,7 @@
                 @csrf
                 @method('PUT')
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-5 gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
                             for="contract_id"
@@ -58,34 +58,6 @@
                         />
 
                         <x-form.error :messages="$errors->get('title')" />
-                    </div>
-
-                    <div class="space-y-2">
-                        <x-form.label
-                            for="value"
-                            :value="__('Valor')"
-                        />
-
-                        <x-form.input-with-icon-wrapper>
-                            <x-slot name="icon">
-                                <i class="fa-solid fa-brazilian-real-sign"></i>
-                            </x-slot>
-
-                            <x-form.input
-                                withicon
-                                id="value"
-                                name="value"
-                                type="text"
-                                class="block w-full"
-                                :value="old('value', number_format($pack->value, 2, ',', '.'))"
-                                x-mask:dynamic="$money($input, ',', '.', 2)"
-                                required
-                                autofocus
-                                autocomplete="value"
-                            />
-                        </x-form.input-with-icon-wrapper>
-
-                        <x-form.error :messages="$errors->get('value')" />
                     </div>
 
                     <div class="space-y-2">

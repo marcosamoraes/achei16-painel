@@ -13,6 +13,7 @@ use App\Models\User;
 use Buglinjo\LaravelWebp\Webp;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +28,14 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        $companies = Company::paginate(50);
+        if (Auth::user()->role === UserRoleEnum::Admin->value) {
+            $companies = Company::paginate(50);
+        } else if (Auth::user()->role === UserRoleEnum::Seller->value) {
+            $companies = Company::where('user_id', Auth::id())->paginate(50);
+        } else {
+            $client = Client::where('user_id', Auth::id())->first();
+            $companies = Company::where('client_id', $client->id)->paginate(50);
+        }
         return view('companies.index', compact('companies'));
     }
 
