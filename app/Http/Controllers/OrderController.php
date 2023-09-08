@@ -152,6 +152,8 @@ class OrderController extends Controller
 
         curl_close($ch);
 
+        Log::debug('Pagseguro generate code', [$response]);
+
         if (!$response || !simplexml_load_string($response)) {
             throw new Exception("Error Processing Request", 1);
         }
