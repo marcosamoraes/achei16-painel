@@ -82,7 +82,7 @@ class DashboardController extends Controller
             ->where('created_at', '<=', $finalDate)
             ->where('status', OrderStatusEnum::Approved)
             ->where('user_id', auth()->id())
-            ->sum('total');
+            ->sum('value');
 
         return view('dashboard', compact('countCompanies', 'sumOrdersTotal'));
     }
