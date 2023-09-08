@@ -100,7 +100,7 @@
                                     @if (auth()->user()->role === 'admin')
                                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
                                             @if ($order->status === 'pending' && $order->payment_code)
-                                                <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $order->payment_code }}" target="_blank">
+                                                <a href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $order->payment_code }}" target="_blank">
                                                     <x-button variant="info" title="link para pagamento">
                                                         <i class="fas fa-money-bill"></i>
                                                     </x-button>

@@ -129,7 +129,7 @@ class OrderController extends Controller
     {
         $pagseguroEmail = env('PAGSEGURO_EMAIL');
         $pagseguroToken = env('PAGSEGURO_TOKEN');
-        $generateCodeUrl = "https://ws.sandbox.pagseguro.uol.com.br/v2/checkout?email={$pagseguroEmail}&token={$pagseguroToken}";
+        $generateCodeUrl = "https://ws.pagseguro.uol.com.br/v2/checkout?email={$pagseguroEmail}&token={$pagseguroToken}";
 
         $data = [
             'email' => $pagseguroEmail,
@@ -152,7 +152,7 @@ class OrderController extends Controller
 
         curl_close($ch);
 
-        Log::debug('Pagseguro generate code', [$data, $response]);
+        dd($response);
 
         if (!$response || !simplexml_load_string($response)) {
             throw new Exception("Error Processing Request", 1);

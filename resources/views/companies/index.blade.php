@@ -38,6 +38,9 @@
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
                                 </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status de compra</span>
+                                </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
                                 </th>
@@ -72,6 +75,13 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         @if ($company->status)
+                                            <span class="text-green-500">Ativo</span>
+                                        @else
+                                            <span class="text-red-500">Inativo</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                        @if ($company->is_approved)
                                             <span class="text-green-500">Ativo</span>
                                         @else
                                             <span class="text-red-500">Inativo</span>
