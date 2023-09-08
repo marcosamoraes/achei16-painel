@@ -21,6 +21,7 @@ class UpdateCompanyRequest extends FormRequest
     {
         $this->merge([
             'tags' => explode(',', $this->tags),
+            'payment_methods' => implode(', ', $this->payment_methods),
         ]);
     }
 

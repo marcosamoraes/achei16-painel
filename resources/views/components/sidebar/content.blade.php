@@ -78,22 +78,24 @@
         </x-sidebar.link>
     @endif
 
-    @if (auth()->user()->role === 'user')
-        <x-sidebar.link
-            title="Meus Dados"
-            href="{{ route('settings') }}"
-            :isActive="request()->routeIs('settings')"
-        >
-            <x-slot name="icon">
-                <i class="fa fa-user" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
-        <x-sidebar.link title="Contatos" href="#">
-            <x-slot name="icon">
-                <i class="fa fa-file" aria-hidden="true"></i>
-            </x-slot>
-        </x-sidebar.link>
-    @endif
+    <x-sidebar.link
+        title="Meus Dados"
+        href="{{ route('settings') }}"
+        :isActive="request()->routeIs('settings')"
+    >
+        <x-slot name="icon">
+            <i class="fa fa-user" aria-hidden="true"></i>
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link
+        title="Contatos"
+        href="{{ route('contacts.index') }}"
+        :isActive="request()->routeIs('contacts.*')"
+    >
+        <x-slot name="icon">
+            <i class="fa fa-file" aria-hidden="true"></i>
+        </x-slot>
+    </x-sidebar.link>
 
     @if (auth()->user()->role === 'admin')
         <x-sidebar.link

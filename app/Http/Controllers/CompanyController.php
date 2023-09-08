@@ -10,6 +10,7 @@ use App\Models\Client;
 use App\Models\Company;
 use App\Models\Tag;
 use App\Models\User;
+use Buglinjo\LaravelWebp\Webp;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,12 +51,22 @@ class CompanyController extends Controller
 
             $validated = $request->validated();
 
-            $validated['image'] = $validated['image']->store('companies');
+            $webp = Webp::make($validated['image']);
+            $fileName = 'companies/' . uniqid() . '.webp';
+
+            if ($webp->save(public_path('storage/' . $fileName))) {
+                $validated['image'] = $fileName;
+            }
 
             if (isset($validated['images']) && count($validated['images']) > 0) {
                 $images = [];
                 foreach ($validated['images'] as $image) {
-                    $images[] = $image->store('companies');
+                    $webp = Webp::make($image);
+                    $fileName = 'companies/' . uniqid() . '.webp';
+
+                    if ($webp->save(public_path('storage/' . $fileName))) {
+                        $images[] = $fileName;
+                    }
                 }
                 $validated['images'] = $images;
             }
@@ -112,7 +123,12 @@ class CompanyController extends Controller
                     unlink('storage/' . $company->image);
                 }
 
-                $validated['image'] = $validated['image']->store('companies');
+                $webp = Webp::make($validated['image']);
+                $fileName = 'companies/' . uniqid() . '.webp';
+
+                if ($webp->save(public_path('storage/' . $fileName))) {
+                    $validated['image'] = $fileName;
+                }
             }
 
             if (isset($validated['images']) && count($validated['images']) > 0) {
@@ -123,7 +139,12 @@ class CompanyController extends Controller
 
                 $images = [];
                 foreach ($validated['images'] as $image) {
-                    $images[] = $image->store('companies');
+                    $webp = Webp::make($image);
+                    $fileName = 'companies/' . uniqid() . '.webp';
+
+                    if ($webp->save(public_path('storage/' . $fileName))) {
+                        $images[] = $fileName;
+                    }
                 }
                 $validated['images'] = $images;
             }

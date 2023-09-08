@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
@@ -33,6 +34,9 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::resource('companies', CompanyController::class);
+    Route::resource('contacts', ContactController::class)->only(['index', 'destroy']);
+
     Route::middleware("role:{$admin}")->group(function () {
         Route::resource('sellers', SellerController::class);
         Route::resource('contracts', ContractController::class);
@@ -40,13 +44,14 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
         Route::resource('categories', CategoryController::class);
     });
 
-    Route::resource('companies', CompanyController::class);
-    Route::get('/settings', [ClientController::class, 'settings'])->name('settings');
-    Route::put('/settings', [ClientController::class, 'updateSettings'])->name('settings.update');
-
     Route::middleware("role:{$admin}|{$seller}")->group(function () {
         Route::resource('clients', ClientController::class);
         Route::resource('orders', OrderController::class)->only(['index']);
+    });
+
+    Route::middleware("role:{$client}")->group(function () {
+        Route::get('/settings', [ClientController::class, 'settings'])->name('settings');
+        Route::put('/settings', [ClientController::class, 'updateSettings'])->name('settings.update');
     });
 });
 
