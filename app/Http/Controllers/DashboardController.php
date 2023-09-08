@@ -54,7 +54,7 @@ class DashboardController extends Controller
         $sumOrdersTotal = Order::where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
             ->where('status', OrderStatusEnum::Approved)
-            ->sum('total');
+            ->sum('value');
 
         $companiesPerCity = Company::selectRaw('count(*) as total, city')
             ->where('created_at', '>=', $initialDate)
