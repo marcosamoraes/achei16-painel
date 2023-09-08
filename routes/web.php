@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SellerController;
 use App\Http\Enums\UserRoleEnum;
 
@@ -42,6 +44,8 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
         Route::resource('contracts', ContractController::class);
         Route::resource('packs', PackController::class);
         Route::resource('categories', CategoryController::class);
+        Route::resource('registers', RegisterController::class)->only(['index', 'destroy']);
+        Route::resource('banners', BannerController::class);
     });
 
     Route::middleware("role:{$admin}|{$seller}")->group(function () {

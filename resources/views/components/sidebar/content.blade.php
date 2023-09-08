@@ -108,6 +108,26 @@
             </x-slot>
         </x-sidebar.link>
 
+        <x-sidebar.link
+            title="Banners"
+            href="{{ route('banners.index') }}"
+            :isActive="request()->routeIs('banners.*')"
+        >
+            <x-slot name="icon">
+                <i class="fa fa-image" aria-hidden="true"></i>
+            </x-slot>
+        </x-sidebar.link>
+
+        <x-sidebar.link
+            title="Interessados"
+            href="{{ route('registers.index') }}"
+            :isActive="request()->routeIs('registers.*')"
+        >
+            <x-slot name="icon">
+                <i class="fa fa-file" aria-hidden="true"></i>
+            </x-slot>
+        </x-sidebar.link>
+
         <x-sidebar.link title="Configurações" href="#">
             <x-slot name="icon">
                 <i class="fa fa-gear" aria-hidden="true"></i>

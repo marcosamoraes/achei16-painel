@@ -7,19 +7,15 @@ use App\Models\Contact;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class ContactController extends Controller
+class RegisterController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        if (Auth::user()->role === UserRoleEnum::Admin->value) {
-            $contacts = Contact::whereNull('user_id')->whereNull('city')->latest()->paginate();
-        } else {
-            $contacts = Contact::where('user_id', Auth::id())->latest()->paginate();
-        }
-        return view('contacts.index', compact('contacts'));
+        $contacts = Contact::whereNull('user_id')->whereNotNull('city')->latest()->paginate();
+        return view('registers.index', compact('contacts'));
     }
 
     /**

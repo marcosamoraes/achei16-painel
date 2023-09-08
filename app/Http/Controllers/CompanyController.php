@@ -54,6 +54,10 @@ class CompanyController extends Controller
             $webp = Webp::make($validated['image']);
             $fileName = 'companies/' . uniqid() . '.webp';
 
+            if (!file_exists(public_path('storage/companies'))) {
+                mkdir(public_path('storage/companies'), 0777, true);
+            }
+
             if ($webp->save(public_path('storage/' . $fileName))) {
                 $validated['image'] = $fileName;
             }
@@ -121,6 +125,10 @@ class CompanyController extends Controller
             if (isset($validated['image'])) {
                 if ($company->image && file_exists('storage/' . $company->image)) {
                     unlink('storage/' . $company->image);
+                }
+
+                if (!file_exists(public_path('storage/companies'))) {
+                    mkdir(public_path('storage/companies'), 0777, true);
                 }
 
                 $webp = Webp::make($validated['image']);
