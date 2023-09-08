@@ -152,8 +152,6 @@ class OrderController extends Controller
 
         curl_close($ch);
 
-        dd($response);
-
         if (!$response || !simplexml_load_string($response)) {
             throw new Exception("Error Processing Request", 1);
         }
