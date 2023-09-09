@@ -137,6 +137,14 @@ class Company extends Model
     }
 
     /**
+     * Get the last order approved.
+     */
+    public function lastOrderApproved()
+    {
+        return $this->hasOne(Order::class)->where('status', 'approved')->latest();
+    }
+
+    /**
      * Query build to return only companies with status = true and with an order not expired with status = approved.
      */
     public function scopeApproved($query)
