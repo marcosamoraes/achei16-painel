@@ -210,7 +210,7 @@ class OrderController extends Controller
         list(, $fileData) = explode(';', $request->signature);
         list(, $fileData) = explode(',', $fileData);
 
-        Storage::put($filePath, base64_decode($fileData));
+        Storage::put("public/{$filePath}", base64_decode($fileData));
 
         $order->update(['contract_url' => $filePath]);
 
