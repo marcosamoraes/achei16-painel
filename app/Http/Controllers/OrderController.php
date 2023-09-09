@@ -210,6 +210,10 @@ class OrderController extends Controller
         list(, $fileData) = explode(';', $request->signature);
         list(, $fileData) = explode(',', $fileData);
 
+        // change permissions of public/contracts to 777
+        $path = storage_path('app/public/' . $filePath);
+        chmod(dirname($path), 0777);
+
         Storage::put("public/{$filePath}", base64_decode($fileData));
 
         $order->update(['contract_url' => $filePath]);
