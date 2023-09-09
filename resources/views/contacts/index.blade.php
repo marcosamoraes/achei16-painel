@@ -61,7 +61,7 @@
                                         {{ $contact->created_at?->format('d/m/Y H:i:s') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
-                                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank">
+                                        <a href="https://wa.me/+55{{ preg_replace('/\D/', '', $contact->whatsapp) }}" target="_blank">
                                             <x-button variant="whatsapp" title="Whatsapp">
                                                 <i class="fab fa-whatsapp"></i>
                                             </x-button>

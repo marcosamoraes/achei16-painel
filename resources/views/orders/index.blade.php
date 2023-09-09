@@ -135,7 +135,7 @@
                                                     </x-button>
                                                 </a>
                                             @else
-                                                <a href="https://wa.me/{{ preg_replace('/\D/', '', $order->company->phone) }}?text=Link do contrato do Achei16: {{ route('orders.contract', $order->uuid) }}" target="_blank">
+                                                <a href="https://wa.me/+55{{ preg_replace('/\D/', '', $order->company->phone) }}?text=Link do contrato do Achei16: {{ route('orders.contract', $order->uuid) }}" target="_blank">
                                                     <x-button variant="whatsapp" title="Link do contrato">
                                                         <i class="fab fa-whatsapp"></i>
                                                     </x-button>

@@ -24,7 +24,11 @@ class Order extends Model
         'value',
         'status',
         'payment_code',
+        'contract_name',
+        'contract_cpf',
         'contract_url',
+        'contract_ip',
+        'contract_signed_at',
         'approved_at',
         'canceled_at',
         'expire_at'
@@ -39,6 +43,7 @@ class Order extends Model
         'approved_at' => 'datetime',
         'canceled_at' => 'datetime',
         'expire_at' => 'datetime',
+        'contract_signed_at' => 'datetime',
     ];
 
     public function getExpireAt()

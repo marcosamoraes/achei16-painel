@@ -219,9 +219,15 @@ class OrderController extends Controller
 
         Storage::put("public/{$filePath}", base64_decode($fileData));
 
-        $order->update(['contract_url' => $filePath]);
+        $order->update([
+            'contract_name' => $request->contract_name,
+            'contract_cpf' => $request->contract_cpf,
+            'contract_url' => $filePath,
+            'contract_signed_at' => now(),
+            'contract_ip' => $request->ip(),
+        ]);
 
         Alert::toast('Contrato assinado com sucesso.', 'success');
-        return Redirect::route('orders.index');
+        return Redirect::route('companies.index');
     }
 }

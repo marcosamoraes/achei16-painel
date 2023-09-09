@@ -106,7 +106,7 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
                                         @if (auth()->user()->role === 'admin')
-                                            <a href="https://wa.me/{{ preg_replace('/\D/', '', $company->phone) }}" target="_blank">
+                                            <a href="https://wa.me/+55{{ preg_replace('/\D/', '', $company->phone) }}" target="_blank">
                                                 <x-button variant="whatsapp" title="Whatsapp">
                                                     <i class="fab fa-whatsapp"></i>
                                                 </x-button>

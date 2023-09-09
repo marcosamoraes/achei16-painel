@@ -35,6 +35,7 @@ class Client extends Model
      */
     protected $appends = [
         'total_visits',
+        'full_address',
     ];
 
     /**
@@ -56,5 +57,10 @@ class Client extends Model
     protected function totalVisits(): Attribute
     {
         return Attribute::get(fn () => $this->companies->sum('visits'));
+    }
+
+    protected function fullAddress(): Attribute
+    {
+        return Attribute::get(fn () => $this->address . ', ' . $this->number . ', ' . $this->neighborhood . ', ' . $this->city . ' - ' . $this->state);
     }
 }
