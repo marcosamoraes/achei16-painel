@@ -30,7 +30,7 @@
                                 id="client_id"
                                 name="client_id"
                                 type="text"
-                                class="block w-full"
+                                class="block w-full select2"
                                 :value="old('client_id', $company->client_id)"
                                 required
                                 autofocus

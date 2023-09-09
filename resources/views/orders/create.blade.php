@@ -24,7 +24,7 @@
                             id="company_id"
                             name="company_id"
                             type="text"
-                            class="block w-full"
+                            class="block w-full select2"
                             :value="old('company_id')"
                             required
                             autofocus

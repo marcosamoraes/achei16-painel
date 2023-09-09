@@ -28,18 +28,21 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $orders = Order::when($request->search, function ($query) use ($request) {
-            $query->orWhereHas('user', function ($query) use ($request) {
-                $query->where('name', 'like', "%{$request->search}%");
-                $query->orWhere('email', 'like', "%{$request->search}%");
-            });
-            $query->orWhereHas('company', function ($query) use ($request) {
-                $query->where('name', 'like', "%{$request->search}%");
-            });
-            $query->orWhereHas('pack', function ($query) use ($request) {
-                $query->where('title', 'like', "%{$request->search}%");
-            });
-            $query->orWhere('id', $request->search);
-        })
+                $query->orWhereHas('user', function ($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->search}%");
+                    $query->orWhere('email', 'like', "%{$request->search}%");
+                });
+                $query->orWhereHas('company', function ($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->search}%");
+                });
+                $query->orWhereHas('pack', function ($query) use ($request) {
+                    $query->where('title', 'like', "%{$request->search}%");
+                });
+                $query->orWhere('id', $request->search);
+            })
+            ->when($request->status, function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
             ->where(function ($query) {
                 if (Auth::user()->role !== UserRoleEnum::Admin->value) {
                     $query->where('user_id', Auth::id());

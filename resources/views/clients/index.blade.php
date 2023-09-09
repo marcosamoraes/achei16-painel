@@ -24,9 +24,6 @@
                                 </th>
                                 @if (auth()->user()->role === 'admin')
                                     <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                        <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Empresa</span>
-                                    </th>
-                                    <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                         <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">E-mail</span>
                                     </th>
                                     <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
@@ -79,6 +76,11 @@
                                             {{ $client->created_at?->format('d/m/Y H:i:s') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                            <a href="https://wa.me/{{ preg_replace('/\D/', '', $client->phone) }}" target="_blank">
+                                                <x-button variant="whatsapp" title="Whatsapp">
+                                                    <i class="fab fa-whatsapp"></i>
+                                                </x-button>
+                                            </a>
                                             <a href="{{ route('clients.edit', $client->id) }}">
                                                 <x-button variant="warning">
                                                     <i class="fas fa-edit"></i>

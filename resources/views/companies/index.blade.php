@@ -38,10 +38,13 @@
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Telefone</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Cidade</span>
+                                </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status de compra</span>
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status de venda</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
@@ -76,6 +79,9 @@
                                         {{ $company->phone2 }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                        {{ "{$company->city}/{$company->state}" }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         @if ($company->status)
                                             <span class="text-green-500">Ativo</span>
                                         @else
@@ -93,6 +99,11 @@
                                         {{ $company->created_at?->format('d/m/Y H:i:s') }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                        <a href="https://wa.me/{{ preg_replace('/\D/', '', $company->phone) }}" target="_blank">
+                                            <x-button variant="whatsapp" title="Whatsapp">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </x-button>
+                                        </a>
                                         <a href="{{ route('companies.edit', $company->id) }}">
                                             <x-button variant="warning">
                                                 <i class="fas fa-edit"></i>

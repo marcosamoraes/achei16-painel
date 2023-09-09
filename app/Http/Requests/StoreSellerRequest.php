@@ -44,7 +44,7 @@ class StoreSellerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
             'seller.*' => 'nullable',
             'seller.cpf' => 'nullable|string|max:14',
             'seller.rg' => 'nullable|string|max:12',

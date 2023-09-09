@@ -186,7 +186,7 @@ Alpine.start()
 
 $(document).ready(function() {
     // Select2 Multiple
-    $('.select2-multiple').select2({
+    $('.select2, .select2-multiple').select2({
         placeholder: "Selecione...",
         allowClear: true
     });

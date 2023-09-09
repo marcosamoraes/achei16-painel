@@ -8,6 +8,31 @@
 
     <x-search-bar />
 
+    <div class="max-w-10xl sm:px-6 lg:px-8 mt-5">
+        <div class="flex justify-between">
+            <form method="GET" class="flex gap-3" style="width: 200px">
+                <input type="hidden" name="search" value="{{ request()->search }}">
+                <x-form.select
+                    id="status"
+                    name="status"
+                    type="text"
+                    class="block w-full"
+                    :value="request()->status"
+                    autofocus
+                    autocomplete="status"
+                >
+                    <option value="">Selecione...</option>
+                    <option value="pending" {{ request()->status === 'pending' ? 'selected' : false }}>Pendente</option>
+                    <option value="approved" {{ request()->status === 'approved' ? 'selected' : false }}>Aprovado</option>
+                    <option value="canceled" {{ request()->status === 'canceled' ? 'selected' : false }}>Cancelado</option>
+                </x-form.select>
+                <x-button>
+                    <i class="fas fa-search"></i>
+                </x-button>
+            </form>
+        </div>
+    </div>
+
     <div class="py-12">
         <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-dark-eval-1 overflow-hidden shadow-sm sm:rounded-lg">
@@ -28,22 +53,22 @@
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Empresa</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Cidade</span>
+                                </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Pacote</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Valor</span>
+                                </th>
+                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
+                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de aprovação</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Vence em</span>
                                 </th>
                                 <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-center">
                                     <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Status</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de aprovação/cancelamento</span>
-                                </th>
-                                <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
-                                    <span class="text-xs leading-4 font-medium text-gray-500 dark:text-white uppercase tracking-wider">Data de criação</span>
                                 </th>
                                 @if (auth()->user()->role === 'admin')
                                     <th class="px-6 py-3 bg-gray-50 dark:bg-dark-eval-1 text-left">
@@ -68,24 +93,13 @@
                                         {{ $order->company->name }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                        {{ "{$order->company->city}/{$order->company->state}" }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         {{ $order->pack->title }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
                                         R$ {{ number_format($order->value, 2, ',', '.') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                        {{ $order->expire_at?->format('d/m/Y') ?? '-' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
-                                        @if ($order->status === 'pending')
-                                            <span>Pendente</span>
-                                        @elseif ($order->status === 'approved')
-                                            <span>Aprovado</span>
-                                        @elseif ($order->status === 'canceled')
-                                            <span>Cancelado</span>
-                                        @else
-                                            <span>Reembolsado</span>
-                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
                                         @if ($order->approved_at)
@@ -97,7 +111,20 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white">
-                                        {{ $order->created_at?->format('d/m/Y H:i:s') }}
+                                        {{ $order->expire_at?->format('d/m/Y') ?? '-' }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-no-wrap text-sm text-center leading-5 text-gray-900 dark:text-white">
+                                        <b>
+                                            @if ($order->status === 'pending')
+                                                <span style="color: rgb(234 179 8 / var(--tw-text-opacity));">Pendente</span>
+                                            @elseif ($order->status === 'approved')
+                                                <span class="text-green-500">Aprovado</span>
+                                            @elseif ($order->status === 'canceled')
+                                                <span class="text-red-500">Cancelado</span>
+                                            @else
+                                                <span class="text-gray-500">Reembolsado</span>
+                                            @endif
+                                        </b>
                                     </td>
                                     @if (auth()->user()->role === 'admin')
                                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">

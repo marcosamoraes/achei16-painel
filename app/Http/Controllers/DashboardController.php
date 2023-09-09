@@ -39,9 +39,14 @@ class DashboardController extends Controller
             })
             ->count();
 
-        $countCompanies = Company::where('created_at', '>=', $initialDate)
+        $countActiveCompanies = Company::where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
             ->where('status', true)
+            ->count();
+
+        $countInactiveCompanies = Company::where('created_at', '>=', $initialDate)
+            ->where('created_at', '<=', $finalDate)
+            ->where('status', false)
             ->count();
 
         $countSellers = Seller::where('created_at', '>=', $initialDate)
@@ -56,6 +61,18 @@ class DashboardController extends Controller
             ->where('status', OrderStatusEnum::Approved)
             ->sum('value');
 
+        $countContacts = Contact::where('created_at', '>=', $initialDate)
+            ->where('created_at', '<=', $finalDate)
+            ->whereNull('city')
+            ->whereNull('user_id')
+            ->count();
+
+        $countRegisters = Contact::where('created_at', '>=', $initialDate)
+            ->where('created_at', '<=', $finalDate)
+            ->whereNotNull('city')
+            ->whereNull('user_id')
+            ->count();
+
         $companiesPerCity = Company::selectRaw('count(*) as total, city')
             ->where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
@@ -67,15 +84,32 @@ class DashboardController extends Controller
         $companiesPerCityLabels = $companiesPerCity->map(fn ($item) => "&quot;{$item->city}&quot;")->join(',');
         $companiesPerCityValues = $companiesPerCity->map(fn ($item) => $item->total)->join(',');
 
-        return view('dashboard', compact('countClients', 'countCompanies', 'countSellers', 'sumOrdersTotal', 'companiesPerCity', 'companiesPerCityLabels', 'companiesPerCityValues'));
+        return view('dashboard', compact(
+            'countClients',
+            'countActiveCompanies',
+            'countInactiveCompanies',
+            'countSellers',
+            'sumOrdersTotal',
+            'companiesPerCity',
+            'companiesPerCityLabels',
+            'companiesPerCityValues',
+            'countContacts',
+            'countRegisters',
+        ));
     }
 
     private function getSellerDashboard($initialDate, $finalDate)
     {
-        $countCompanies = Company::where('created_at', '>=', $initialDate)
+        $countActiveCompanies = Company::where('created_at', '>=', $initialDate)
             ->where('created_at', '<=', $finalDate)
             ->where('user_id', auth()->id())
             ->where('status', true)
+            ->count();
+
+        $countInactiveCompanies = Company::where('created_at', '>=', $initialDate)
+            ->where('created_at', '<=', $finalDate)
+            ->where('user_id', auth()->id())
+            ->where('status', false)
             ->count();
 
         $sumOrdersTotal = Order::where('created_at', '>=', $initialDate)

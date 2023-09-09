@@ -23,7 +23,7 @@ class StoreClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
             'client.*' => 'nullable',
             'client.cpf_cnpj' => 'nullable|string',
             'client.phone' => 'nullable|string|max:20',
