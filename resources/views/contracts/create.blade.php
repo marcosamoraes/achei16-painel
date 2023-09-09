@@ -42,15 +42,10 @@
                             :value="__('Descrição')"
                         />
 
-                        <x-form.textarea
-                            id="description"
-                            name="description"
-                            type="text"
-                            class="block w-full"
-                            :value="old('description')"
-                            autofocus
-                            autocomplete="description"
-                        ></x-form.textarea>
+                        <div id="editor" style="height: 300px">
+                            {!! old('description') !!}
+                        </div>
+                        <input type="hidden" id="description" name="description">
 
                         <x-form.error :messages="$errors->get('description')" />
                     </div>
@@ -65,3 +60,17 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    var form = document.getElementById('contractForm');
+    var descriptionInput = document.getElementById('description');
+    var quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        descriptionInput.value = quill.root.innerHTML;
+        form.submit();
+    });
+</script>

@@ -35,6 +35,9 @@
         case 'black':
             $variantClasses = 'bg-black text-gray-300 hover:text-white hover:bg-gray-800 focus:ring-black dark:hover:bg-dark-eval-3';
         break;
+        case 'whatsapp':
+            $variantClasses = 'bg-green-500 text-white hover:bg-green-300 focus:ring-green-500';
+        break;
         default:
             $variantClasses = 'bg-primary-500 text-white hover:bg-primary-700 focus:ring-primary-500';
     }

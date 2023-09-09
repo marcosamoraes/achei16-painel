@@ -101,7 +101,26 @@
                                     </td>
                                     @if (auth()->user()->role === 'admin')
                                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
+                                            @if ($order->contract_url)
+                                                <a href="{{ route('orders.contract', $order->uuid) }}" target="_blank">
+                                                    <x-button variant="primary" title="Assinatura do contrato">
+                                                        <i class="fas fa-file"></i>
+                                                    </x-button>
+                                                </a>
+                                            @endif
                                             @if ($order->status === 'pending')
+                                                @if (!$order->contract_url)
+                                                    <a href="https://wa.me/{{ preg_replace('/\D/', '', $order->company->phone) }}?text=Link do contrato do Achei16: {{ route('orders.contract', $order->uuid) }}" target="_blank">
+                                                        <x-button variant="whatsapp" title="Link do contrato">
+                                                            <i class="fab fa-whatsapp"></i>
+                                                        </x-button>
+                                                    </a>
+                                                    <a href="{{ route('orders.contract', $order->uuid) }}" target="_blank">
+                                                        <x-button variant="black" title="Link do contrato">
+                                                            <i class="fas fa-file"></i>
+                                                        </x-button>
+                                                    </a>
+                                                @endif
                                                 <a href="{{ route('orders.payment.generate', $order->id) }}" target="_blank">
                                                     <x-button variant="info" title="gerar link para pagamento">
                                                         <i class="fas fa-money-bill"></i>

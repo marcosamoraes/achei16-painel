@@ -29,6 +29,9 @@ $admin = UserRoleEnum::Admin->value;
 $seller = UserRoleEnum::Seller->value;
 $client = UserRoleEnum::Client->value;
 
+Route::get('/venda/{order:uuid}/contrato', [OrderController::class, 'viewContract'])->name('orders.contract');
+Route::post('/venda/{order:uuid}/contrato', [OrderController::class, 'signContract'])->name('orders.contract.sign');
+
 Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 

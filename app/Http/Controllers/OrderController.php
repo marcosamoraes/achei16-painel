@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Str;
 
@@ -195,5 +196,25 @@ class OrderController extends Controller
     public function paymentWebhook(Request $request)
     {
         Log::info('Pagseguro webhook', $request->all());
+    }
+
+    public function viewContract(Order $order)
+    {
+        return view('orders.contract', compact('order'));
+    }
+
+    public function signContract(Request $request, Order $order)
+    {
+        $filePath = 'contracts/' . uniqid() . '.jpg';
+
+        list(, $fileData) = explode(';', $request->signature);
+        list(, $fileData) = explode(',', $fileData);
+
+        Storage::put($filePath, base64_decode($fileData));
+
+        $order->update(['contract_url' => $filePath]);
+
+        Alert::toast('Contrato assinado com sucesso.', 'success');
+        return Redirect::route('orders.index');
     }
 }
