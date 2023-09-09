@@ -9,6 +9,8 @@ use App\Models\Company;
 use App\Models\Order;
 use App\Models\Pack;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,12 +39,12 @@ class OrderController extends Controller
             });
             $query->orWhere('id', $request->search);
         })
-        ->where(function ($query) {
-            if (Auth::user()->role !== UserRoleEnum::Admin->value) {
-                $query->where('user_id', Auth::id());
-            }
-        })
-        ->paginate(50);
+            ->where(function ($query) {
+                if (Auth::user()->role !== UserRoleEnum::Admin->value) {
+                    $query->where('user_id', Auth::id());
+                }
+            })
+            ->paginate(50);
 
         return view('orders.index', compact('orders'));
     }
@@ -138,37 +140,53 @@ class OrderController extends Controller
         $pagseguroToken = env('PAGSEGURO_TOKEN');
         $generateCodeUrl = "https://ws.pagseguro.uol.com.br/v2/checkout?email={$pagseguroEmail}&token={$pagseguroToken}";
 
-        $data = [
-            'email' => $pagseguroEmail,
-            'token' => $pagseguroToken,
-            'currency' => 'BRL',
-            'itemId1' => '1',
-            'itemDescription1' => $order->pack->title,
-            'itemAmount1' => number_format($order->value, 2, '.', ''),
-            'itemQuantity1' => '1',
-            'itemWeight1' => '0',
-            'shippingAddressRequired' => 'false',
-            'reference' => $order->id,
-        ];
+        try {
+            $id = $order->pack->id;
+            $title = $order->pack->title;
+            $amount = number_format($order->value, 2, '.', '');
+            $orderId = $order->id;
 
-        $ch = curl_init($generateCodeUrl);
+            $data =
+                <<<XML
+                    <checkout>
+                        <email>{{$pagseguroEmail}}</email>
+                        <token>{{$pagseguroToken}}</token>
+                        <currency>BRL</currency>
+                        <items>
+                            <item>
+                                <id>{{$id}}</id>
+                                <description>{{$title}}</description>
+                                <amount>{{$amount}}</amount>
+                                <quantity>1</quantity>
+                                <weight>0</weight>
+                                <shippingCost>0.00</shippingCost>
+                            </item>
+                        </items>
+                        <shippingAddressRequired>false</shippingAddressRequired>
+                        <reference>{{$orderId}}</reference>
+                    </checkout>
+                XML;
 
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $client = new Client();
 
-        dd([$data, $generateCodeUrl, http_build_query($data)]);
+            $headers = [
+                'Content-Type' => 'application/xml; charset=ISO-8859-1',
+            ];
+            $response = $client->post($generateCodeUrl, [
+                'headers' => $headers,
+                'body' => $data,
+            ]);
 
-        $response = curl_exec($ch);
+            $xml = simplexml_load_string($response->getBody());
 
-        curl_close($ch);
+            if (!$xml) {
+                throw new Exception("Error Processing Request", 1);
+            }
 
-        if (!$response || !simplexml_load_string($response)) {
-            throw new Exception("Error Processing Request", 1);
+            return redirect("https://pagseguro.uol.com.br/v2/checkout/payment.html?code={$xml->code}");
+        } catch (RequestException $e) {
+            dd($e->getResponse()->getBody()->getContents());
         }
-
-        $xml = simplexml_load_string($response);
-        return redirect("https://pagseguro.uol.com.br/v2/checkout/payment.html?code={$xml->code}");
     }
 
     /**
