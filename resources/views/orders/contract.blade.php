@@ -67,7 +67,7 @@
                                             required
                                             autofocus
                                             autocomplete="contract_name"
-                                            readonly="{{ $order->contract_url }}"
+                                            disabled="{{ $order->contract_url }}"
                                         />
 
                                         <x-form.error :messages="$errors->get('contract_name')" />
@@ -87,7 +87,7 @@
                                             autofocus
                                             required
                                             autocomplete="client[contract_cpf]"
-                                            readonly="{{ $order->contract_url }}"
+                                            disabled="{{ $order->contract_url }}"
                                         />
 
                                         <x-form.error :messages="$errors->get('contract_cpf')" />
