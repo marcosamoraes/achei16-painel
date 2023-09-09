@@ -18,7 +18,11 @@ class ContractController extends Controller
      */
     public function index(Request $request)
     {
-        $contracts = Contract::paginate(50);
+        $contracts = Contract::when($request->search, function ($query) use ($request) {
+            $query->where('name', 'like', "%{$request->search}%");
+            $query->orWhere('id', $request->search);
+        })->paginate(50);
+
         return view('contracts.index', compact('contracts'));
     }
 

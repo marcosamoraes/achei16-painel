@@ -18,7 +18,11 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::paginate(50);
+        $categories = Category::when($request->search, function ($query) use ($request) {
+            $query->where('name', 'like', "%{$request->search}%");
+            $query->orWhere('id', $request->search);
+        })->paginate(50);
+
         return view('categories.index', compact('categories'));
     }
 

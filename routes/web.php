@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
     Route::middleware("role:{$admin}|{$seller}")->group(function () {
         Route::resource('clients', ClientController::class);
         Route::resource('orders', OrderController::class)->except(['destroy']);
+        Route::get('orders/{order}/payment/generate', [OrderController::class, 'generatePaymentLink'])->name('orders.payment.generate');
     });
 
     Route::get('/settings', [ClientController::class, 'settings'])->name('settings');

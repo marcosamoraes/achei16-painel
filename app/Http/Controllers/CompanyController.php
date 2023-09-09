@@ -28,14 +28,27 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::user()->role === UserRoleEnum::Admin->value) {
-            $companies = Company::paginate(50);
-        } else if (Auth::user()->role === UserRoleEnum::Seller->value) {
-            $companies = Company::where('user_id', Auth::id())->paginate(50);
-        } else {
-            $client = Client::where('user_id', Auth::id())->first();
-            $companies = Company::where('client_id', $client->id)->paginate(50);
-        }
+        $companies = Company::when($request->search, function ($query) use ($request) {
+                $query->whereHas('client', function ($query) use ($request) {
+                    $query->whereHas('user', function ($query) use ($request) {
+                        $query->where('name', 'like', "%{$request->search}%");
+                        $query->orWhere('email', 'like', "%{$request->search}%");
+                    });
+                });
+                $query->orWhere('name', 'like', "%{$request->search}%");
+                $query->orWhere('id', $request->search);
+            })
+            ->where(function ($query) {
+                if (Auth::user()->role === UserRoleEnum::Seller->value) {
+                    $query->where('user_id', Auth::id());
+                } else if (Auth::user()->role === UserRoleEnum::Client->value) {
+                    $client = Client::where('user_id', Auth::id())->first();
+                    $query->where('client_id', $client->id);
+                }
+            })
+            ->paginate(50);
+
+
         return view('companies.index', compact('companies'));
     }
 

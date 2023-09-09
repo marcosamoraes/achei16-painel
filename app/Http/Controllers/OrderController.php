@@ -24,11 +24,26 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        if (Auth::user()->role === UserRoleEnum::Admin->value) {
-            $orders = Order::paginate(50);
-        } else {
-            $orders = Order::where('user_id', Auth::id())->paginate(50);
-        }
+        $orders = Order::when($request->search, function ($query) use ($request) {
+            $query->orWhereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->search}%");
+                $query->orWhere('email', 'like', "%{$request->search}%");
+            });
+            $query->orWhereHas('company', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->search}%");
+            });
+            $query->orWhereHas('pack', function ($query) use ($request) {
+                $query->where('title', 'like', "%{$request->search}%");
+            });
+            $query->orWhere('id', $request->search);
+        })
+        ->where(function ($query) {
+            if (Auth::user()->role !== UserRoleEnum::Admin->value) {
+                $query->where('user_id', Auth::id());
+            }
+        })
+        ->paginate(50);
+
         return view('orders.index', compact('orders'));
     }
 
@@ -56,10 +71,6 @@ class OrderController extends Controller
             $validated['uuid'] = Str::uuid();
 
             $order = Order::create($validated);
-
-            $paymentUrl = $this->generatePaymentLink($order);
-
-            $order->update(['payment_code' => $paymentUrl]);
 
             DB::commit();
 
@@ -93,10 +104,6 @@ class OrderController extends Controller
 
             $validated = $request->validated();
 
-            if ($order->value != $validated['value']) {
-                $validated['payment_code'] = $this->generatePaymentLink($order);
-            }
-
             if ($order->status === 'pending' && $validated['status'] === 'approved') {
                 $validated['approved_at'] = now();
                 $validated['expire_at'] = $order->getExpireAt();
@@ -125,7 +132,7 @@ class OrderController extends Controller
         }
     }
 
-    private function generatePaymentLink(Order $order)
+    public function generatePaymentLink(Order $order)
     {
         $pagseguroEmail = env('PAGSEGURO_EMAIL');
         $pagseguroToken = env('PAGSEGURO_TOKEN');
@@ -139,6 +146,8 @@ class OrderController extends Controller
             'itemDescription1' => $order->pack->title,
             'itemAmount1' => number_format($order->value, 2, '.', ''),
             'itemQuantity1' => '1',
+            'itemWeight1' => '0',
+            'shippingAddressRequired' => 'false',
             'reference' => $order->id,
         ];
 
@@ -157,7 +166,7 @@ class OrderController extends Controller
         }
 
         $xml = simplexml_load_string($response);
-        return $xml->code;
+        return redirect("https://pagseguro.uol.com.br/v2/checkout/payment.html?code={$xml->code}");
     }
 
     /**

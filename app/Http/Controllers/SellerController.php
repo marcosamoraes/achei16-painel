@@ -23,7 +23,14 @@ class SellerController extends Controller
      */
     public function index(Request $request)
     {
-        $sellers = Seller::paginate(50);
+        $sellers = Seller::when($request->search, function ($query) use ($request) {
+            $query->whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->search}%");
+                $query->orWhere('email', 'like', "%{$request->search}%");
+            });
+            $query->orWhere('id', $request->search);
+        })->paginate(50);
+
         return view('sellers.index', compact('sellers'));
     }
 

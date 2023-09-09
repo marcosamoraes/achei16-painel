@@ -6,6 +6,8 @@
         <a href="{{ route('orders.create') }}"><x-button>Cadastrar</x-button></a>
     </x-slot>
 
+    <x-search-bar />
+
     <div class="py-12">
         <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-dark-eval-1 overflow-hidden shadow-sm sm:rounded-lg">
@@ -99,9 +101,9 @@
                                     </td>
                                     @if (auth()->user()->role === 'admin')
                                         <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900 dark:text-white flex gap-3">
-                                            @if ($order->status === 'pending' && $order->payment_code)
-                                                <a href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $order->payment_code }}" target="_blank">
-                                                    <x-button variant="info" title="link para pagamento">
+                                            @if ($order->status === 'pending')
+                                                <a href="{{ route('orders.payment.generate', $order->id) }}" target="_blank">
+                                                    <x-button variant="info" title="gerar link para pagamento">
                                                         <i class="fas fa-money-bill"></i>
                                                     </x-button>
                                                 </a>

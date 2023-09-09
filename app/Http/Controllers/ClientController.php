@@ -23,7 +23,14 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $clients = Client::paginate(50);
+        $clients = Client::when($request->search, function ($query) use ($request) {
+            $query->whereHas('user', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->search}%");
+                $query->orWhere('email', 'like', "%{$request->search}%");
+            });
+            $query->orWhere('id', $request->search);
+        })->paginate(50);
+
         return view('clients.index', compact('clients'));
     }
 

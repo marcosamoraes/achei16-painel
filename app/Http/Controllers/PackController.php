@@ -19,7 +19,11 @@ class PackController extends Controller
      */
     public function index(Request $request)
     {
-        $packs = Pack::paginate(50);
+        $packs = Pack::when($request->search, function ($query) use ($request) {
+            $query->where('title', 'like', "%{$request->search}%");
+            $query->orWhere('id', $request->search);
+        })->paginate(50);
+
         return view('packs.index', compact('packs'));
     }
 
