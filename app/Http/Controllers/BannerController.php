@@ -19,7 +19,7 @@ class BannerController extends Controller
      */
     public function index(Request $request)
     {
-        $banners = Banner::paginate(50);
+        $banners = Banner::latest()->paginate(50);
         return view('banners.index', compact('banners'));
     }
 

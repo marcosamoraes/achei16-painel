@@ -29,7 +29,7 @@ class SellerController extends Controller
                 $query->orWhere('email', 'like', "%{$request->search}%");
             });
             $query->orWhere('id', $request->search);
-        })->paginate(50);
+        })->latest()->paginate(50);
 
         return view('sellers.index', compact('sellers'));
     }

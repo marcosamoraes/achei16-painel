@@ -46,6 +46,7 @@ class CompanyController extends Controller
                     $query->where('client_id', $client->id);
                 }
             })
+            ->latest()
             ->paginate(50);
 
 

@@ -29,7 +29,7 @@ class ClientController extends Controller
                 $query->orWhere('email', 'like', "%{$request->search}%");
             });
             $query->orWhere('id', $request->search);
-        })->paginate(50);
+        })->latest()->paginate(50);
 
         return view('clients.index', compact('clients'));
     }

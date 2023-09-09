@@ -21,7 +21,7 @@ class CategoryController extends Controller
         $categories = Category::when($request->search, function ($query) use ($request) {
             $query->where('name', 'like', "%{$request->search}%");
             $query->orWhere('id', $request->search);
-        })->paginate(50);
+        })->latest()->paginate(50);
 
         return view('categories.index', compact('categories'));
     }

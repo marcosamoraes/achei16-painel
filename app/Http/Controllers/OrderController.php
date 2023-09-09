@@ -48,6 +48,7 @@ class OrderController extends Controller
                     $query->where('user_id', Auth::id());
                 }
             })
+            ->latest()
             ->paginate(50);
 
         return view('orders.index', compact('orders'));
