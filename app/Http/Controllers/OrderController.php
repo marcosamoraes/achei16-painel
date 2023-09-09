@@ -157,6 +157,8 @@ class OrderController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
+        dd([$data, $generateCodeUrl, http_build_query($data)]);
+
         $response = curl_exec($ch);
 
         curl_close($ch);
