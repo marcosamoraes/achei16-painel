@@ -61,7 +61,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="status"
-                            :value="__('Status')"
+                            :value="__('Status *')"
                         />
 
                         <x-form.select-status name="status" :value="old('status', true)" />

@@ -19,7 +19,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="name"
-                            :value="__('Nome')"
+                            :value="__('Nome *')"
                         />
 
                         <x-form.input
@@ -39,7 +39,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="status"
-                            :value="__('Status')"
+                            :value="__('Status *')"
                         />
 
                         <x-form.select-status name="status" :value="old('status', $contract->status)" />

@@ -17,7 +17,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="name"
-                            :value="__('Nome')"
+                            :value="__('Nome *')"
                         />
 
                         <x-form.input
@@ -37,7 +37,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="email"
-                            :value="__('E-mail')"
+                            :value="__('E-mail *')"
                         />
 
                         <x-form.input
@@ -59,7 +59,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="cpf_cnpj"
-                            :value="__('CPF/CNPJ')"
+                            :value="__('CPF/CNPJ *')"
                         />
 
                         <x-form.input
@@ -80,7 +80,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="phone"
-                            :value="__('Telefone')"
+                            :value="__('Telefone *')"
                         />
 
                         <x-form.input

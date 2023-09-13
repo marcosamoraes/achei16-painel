@@ -90,15 +90,17 @@
         </x-sidebar.link>
     @endif
 
-    <x-sidebar.link
-        title="Contatos"
-        href="{{ route('contacts.index') }}"
-        :isActive="request()->routeIs('contacts.*')"
-    >
-        <x-slot name="icon">
-            <i class="fa fa-file" aria-hidden="true"></i>
-        </x-slot>
-    </x-sidebar.link>
+    @if (auth()->user()->role === 'admin' || auth()->user()->role === 'user')
+        <x-sidebar.link
+            title="Contatos"
+            href="{{ route('contacts.index') }}"
+            :isActive="request()->routeIs('contacts.*')"
+        >
+            <x-slot name="icon">
+                <i class="fa fa-file" aria-hidden="true"></i>
+            </x-slot>
+        </x-sidebar.link>
+    @endif
 
     @if (auth()->user()->role === 'admin')
         <x-sidebar.link

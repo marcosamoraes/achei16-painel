@@ -187,7 +187,7 @@
                     @endif
 
                     @if (auth()->user()->role === 'seller')
-                        <div class="w-full lg:w-6/12 px-4">
+                        <div class="w-full lg:w-6/12 xl:w-4/12 px-4 mt-3">
                             <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
                                 <div class="flex-auto p-4">
                                     <div class="flex flex-wrap">
@@ -205,7 +205,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full lg:w-6/12 px-4">
+                        <div class="w-full lg:w-6/12 xl:w-4/12 px-4 mt-3">
                             <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
                                 <div class="flex-auto p-4">
                                     <div class="flex flex-wrap">
@@ -223,7 +223,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full lg:w-6/12 px-4">
+                        <div class="w-full lg:w-6/12 xl:w-4/12 px-4 mt-3">
                             <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
                                 <div class="flex-auto p-4">
                                     <div class="flex flex-wrap">
@@ -280,6 +280,26 @@
                                 </div>
                             </div>
                         </div>
+                        @foreach ($activeCompanies as $activeCompany)
+                            <div class="w-full lg:w-6/12 xl:w-4/12 px-4">
+                                <div class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+                                    <div class="flex-auto p-4">
+                                        <div class="flex flex-wrap">
+                                            <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
+                                                <h5 class="text-black uppercase font-bold text-xs">Tempo de Contrato Restante {{ $activeCompanies->count() > 1 ? "- {$activeCompany->name}" : false }}</h5><span
+                                                    class="font-semibold text-xl {{ $activeCompany->daysLeft <= 15 ? 'text-red-500' : 'text-black' }}">{{ $activeCompany->daysLeft }} dias</span>
+                                            </div>
+                                            <div class="relative w-auto pl-4 flex-initial">
+                                                <div
+                                                    class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-yellow-500">
+                                                    <i class="fa fa-file"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     @endif
                 </div>
             </div>

@@ -23,7 +23,7 @@
                         <div class="space-y-2">
                             <x-form.label
                                 for="client_id"
-                                :value="__('Cliente')"
+                                :value="__('Cliente *')"
                             />
 
                             <x-form.select
@@ -47,7 +47,7 @@
                     @endif
 
                     <div class="space-y-2">
-                        <x-form.label for="name" :value="__('Nome')" />
+                        <x-form.label for="name" :value="__('Nome *')" />
 
                         <x-form.input id="name" name="name" type="text" class="block w-full" :value="old('name', $company->name)"
                             required autofocus autocomplete="name" />
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="phone" :value="__('Telefone')" />
+                        <x-form.label for="phone" :value="__('Telefone *')" />
 
                         <x-form.input id="phone" name="phone" type="text" class="block w-full"
                             :value="old('phone', $company->phone)" x-mask:dynamic="phoneMask" autofocus required
@@ -77,7 +77,7 @@
 
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
                     <div class="space-y-2">
-                        <x-form.label for="payment_methods" :value="__('Métodos de Pagamento')" />
+                        <x-form.label for="payment_methods" :value="__('Métodos de Pagamento *')" />
 
                         <x-form.select
                             id="payment_methods"
@@ -103,7 +103,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="featured"
-                            :value="__('Destaque')"
+                            :value="__('Destaque *')"
                         />
 
                         <x-form.select
@@ -126,7 +126,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="opening_24h"
-                            :value="__('Aberto 24h')"
+                            :value="__('Aberto 24h *')"
                         />
 
                         <x-form.select
@@ -149,7 +149,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="status"
-                            :value="__('Status')"
+                            :value="__('Status *')"
                         />
 
                         <x-form.select-status name="status" :value="old('status', $company->status)" />
@@ -433,7 +433,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="categories"
-                            :value="__('Categorias')"
+                            :value="__('Categorias *')"
                         />
 
                         <x-form.select

@@ -17,7 +17,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="company_id"
-                            :value="__('Empresa')"
+                            :value="__('Empresa *')"
                         />
 
                         <x-form.select
@@ -42,7 +42,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="pack_id"
-                            :value="__('Pacote')"
+                            :value="__('Pacote *')"
                         />
 
                         <x-form.select
@@ -67,7 +67,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="value"
-                            :value="__('Valor')"
+                            :value="__('Valor *')"
                         />
 
                         <x-form.input-with-icon-wrapper>

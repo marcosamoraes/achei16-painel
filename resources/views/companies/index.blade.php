@@ -112,7 +112,7 @@
                                                 </x-button>
                                             </a>
                                         @endif
-                                        @if ($company->lastOrderApproved)
+                                        @if ($company->lastOrderApproved && auth()->user()->role !== 'seller')
                                             <a href="{{ route('orders.contract', $company->lastOrderApproved->uuid) }}" target="_blank">
                                                 <x-button variant="black" title="Link do contrato">
                                                     <i class="fas fa-file"></i>

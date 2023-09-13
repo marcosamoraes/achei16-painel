@@ -38,14 +38,18 @@
         <div class="flex flex-col min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-0 dark:text-gray-200">
             <div class="flex flex-col min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-eval-0 dark:text-gray-200">
                 <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                    <div class="flex justify-center">
+                        <x-application-logo class="h-20" />
+                    </div>
                     <div class="px-4 py-6 sm:px-0">
                         <h2 class="text-lg font-medium leading-6 text-gray-900">{{ str()->startsWith($order->pack->contract->name, 'Contrato') ? $order->pack->contract->name : "Contrato {$order->pack->contract->name}" }}</h2>
                         <p class="mt-1 text-sm text-gray-600">Por favor, leia atentamente o contrato abaixo e assine para indicar sua concordância.</p>
                     </div>
                     <div class="px-4 py-6 sm:px-0">
                         <div class="border-2 border-gray-300 rounded-lg p-4 w-full">
-                            <p class="text-sm text-gray-600">CONTRATADA: Leonardo Tosetto Legal, CPF 374.947.196-30 inscrita no CNPJ 18.752.155/0001-40, situado na rua Ana Rita Camacho, 195, Vila Elmaz, São José do Rio Preto, São Paulo.</p><br/>
-                            <p class="text-sm text-gray-600">CONTRATANTE: {{ $order->company->client->user->name }}, inscrita no {{ strlen($order->company->client->cpf_cnpj) > 14 ? 'CNPJ' : 'CPF' }} {{ $order->company->client->cpf_cnpj }}, situado na rua {{ $order->company->client->full_address }}.</p><br/>
+                            <p class="text-sm text-gray-600"><b>CONTRATADA: Leonardo Tosetto Legal, CPF 374.947.196-30 inscrita no CNPJ 18.752.155/0001-40, situado na rua Ana Rita Camacho, 195, Vila Elmaz, São José do Rio Preto, São Paulo.</b></p><br/>
+                            <p class="text-sm text-gray-600"><b>CONTRATANTE: {{ $order->company->client->user->name }}, inscrita no {{ strlen($order->company->client->cpf_cnpj) > 14 ? 'CNPJ' : 'CPF' }} {{ $order->company->client->cpf_cnpj }}, situado na rua {{ $order->company->client->full_address }}.</b></p><br/>
+                            <p class="text-sm text-gray-600"><b>VALOR: R${{ number_format($order->value, 2, ',', '.') }}</b></p><br/>
                             <p class="text-sm text-gray-600">{!! $order->pack->contract->description !!}</p>
                         </div>
                     </div>
@@ -56,7 +60,7 @@
 
                                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4">
                                     <div class="space-y-2">
-                                        <x-form.label for="contract_name" :value="__('Nome')" />
+                                        <x-form.label for="contract_name" :value="__('Nome *')" />
 
                                         <x-form.input
                                             id="contract_name"
@@ -74,7 +78,7 @@
                                     </div>
 
                                     <div class="space-y-2">
-                                        <x-form.label for="contract_cpf" :value="__('CPF')" />
+                                        <x-form.label for="contract_cpf" :value="__('CPF *')" />
 
                                         <x-form.input
                                             id="contract_cpf"
@@ -107,7 +111,10 @@
 
                                 <input type="hidden" name="signature" id="signatureInput">
                                 @if (!$order->contract_url)
-                                    <button type="submit" class="mt-4 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded">Assinar</button>
+                                    <div class="flex justify-center items-center gap-3">
+                                        <button type="submit" class="w-full mt-4 bg-primary-500 hover:bg-primary-700 text-white font-bold py-2 px-4 rounded">Assinar</button>
+                                        <button type="button" id="clearSignature" class="w-full mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Limpar</button>
+                                    </div>
                                 @endif
                             </form>
                         </div>
@@ -129,6 +136,12 @@
             event.preventDefault();
             signatureInput.value = signaturePad.toDataURL();
             form.submit();
+        });
+
+        const clearButton = document.getElementById('clearSignature');
+
+        clearButton.addEventListener('click', function(event) {
+            signaturePad.clear();
         });
     </script>
 </body>

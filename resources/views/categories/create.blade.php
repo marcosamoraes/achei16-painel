@@ -17,7 +17,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="name"
-                            :value="__('Nome')"
+                            :value="__('Nome *')"
                         />
 
                         <x-form.input

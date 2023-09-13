@@ -17,16 +17,6 @@ class UpdatePackRequest extends FormRequest
     }
 
     /**
-     * Prepare the data for validation.
-     */
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'value' => str_replace(['.', ','], ['', '.'], $this->value),
-        ]);
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
@@ -36,7 +26,6 @@ class UpdatePackRequest extends FormRequest
         return [
             'contract_id' => 'required|exists:contracts,id',
             'title' => 'required|string|max:255',
-            'value' => 'required|numeric',
             'validity' => ['required', new Enum(PackValidityEnum::class)],
             'description' => 'nullable|string|max:255',
             'status' => 'required|boolean',

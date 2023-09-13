@@ -9,6 +9,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use App\Models\Order;
 use App\Models\Seller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -118,7 +119,7 @@ class DashboardController extends Controller
             ->where('user_id', auth()->id())
             ->sum('value');
 
-        return view('dashboard', compact('countCompanies', 'sumOrdersTotal'));
+        return view('dashboard', compact('countActiveCompanies', 'countInactiveCompanies', 'sumOrdersTotal'));
     }
 
     private function getClientDashboard($initialDate, $finalDate)
@@ -127,6 +128,10 @@ class DashboardController extends Controller
         $countVisits = $client->total_visits;
         $countContacts = Contact::where('user_id', auth()->id())->count();
 
-        return view('dashboard', compact('countVisits', 'countContacts'));
+        $activeCompanies = Company::where('client_id', $client->id)->approved()->get();
+
+        $activeCompanies->map(fn ($company) => $company->daysLeft = $company->lastOrderApproved?->expire_at?->diffInDays(Carbon::now()));
+
+        return view('dashboard', compact('countVisits', 'countContacts', 'activeCompanies'));
     }
 }

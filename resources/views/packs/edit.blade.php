@@ -18,7 +18,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="contract_id"
-                            :value="__('Contrato')"
+                            :value="__('Contrato *')"
                         />
 
                         <x-form.select
@@ -43,7 +43,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="title"
-                            :value="__('Título')"
+                            :value="__('Título *')"
                         />
 
                         <x-form.input
@@ -63,7 +63,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="validity"
-                            :value="__('Validade')"
+                            :value="__('Validade *')"
                         />
 
                         <x-form.select
@@ -88,7 +88,7 @@
                     <div class="space-y-2">
                         <x-form.label
                             for="status"
-                            :value="__('Status')"
+                            :value="__('Status *')"
                         />
 
                         <x-form.select-status name="status" :value="old('status', $pack->status)" />
