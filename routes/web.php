@@ -12,6 +12,7 @@ use App\Http\Controllers\PackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
 use App\Http\Enums\UserRoleEnum;
 
@@ -48,6 +49,7 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
         Route::resource('packs', PackController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('registers', RegisterController::class)->only(['index', 'destroy']);
+        Route::resource('reviews', ReviewController::class)->only(['index', 'destroy']);
         Route::resource('banners', BannerController::class);
     });
 

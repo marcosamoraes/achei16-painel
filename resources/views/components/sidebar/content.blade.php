@@ -133,11 +133,15 @@
             </x-slot>
         </x-sidebar.link>
 
-        {{-- <x-sidebar.link title="Configurações" href="#">
+        <x-sidebar.link
+            title="Avaliações"
+            href="{{ route('reviews.index') }}"
+            :isActive="request()->routeIs('reviews.*')"
+        >
             <x-slot name="icon">
-                <i class="fa fa-gear" aria-hidden="true"></i>
+                <i class="fa fa-star" aria-hidden="true"></i>
             </x-slot>
-        </x-sidebar.link> --}}
+        </x-sidebar.link>
     @endif
 
     <!-- Authentication -->

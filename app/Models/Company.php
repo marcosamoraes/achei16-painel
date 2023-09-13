@@ -70,7 +70,8 @@ class Company extends Model
     protected $appends = [
         'image_url',
         'images_url',
-        'is_approved'
+        'is_approved',
+        'rating'
     ];
 
     public static function boot()
@@ -162,5 +163,21 @@ class Company extends Model
     public function isApproved(): Attribute
     {
         return Attribute::get(fn () => $this->orders()->where('status', 'approved')->where('expire_at', '>', now())->exists());
+    }
+
+    /**
+     * Get the reviews for the company.
+     */
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Attribute to return the rating of the company
+     */
+    public function rating(): Attribute
+    {
+        return Attribute::get(fn () => $this->reviews()->avg('rating'));
     }
 }
