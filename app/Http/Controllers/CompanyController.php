@@ -38,6 +38,45 @@ class CompanyController extends Controller
                 $query->orWhere('name', 'like', "%{$request->search}%");
                 $query->orWhere('id', $request->search);
             })
+            ->when($request->filled('status'), function ($query) use ($request) {
+                $query->where('status', $request->status);
+            })
+            ->when($request->filled('status_sell'), function ($query) use ($request) {
+                if ($request->status_sell) {
+                    $query->whereHas('orders', function ($query) {
+                        $query->where('status', 'approved');
+                        $query->where('expire_at', '>', now());
+                    });
+                } else {
+                    $query->whereDoesntHave('orders', function ($query) {
+                        $query->where('status', 'approved');
+                        $query->where('expire_at', '>', now());
+                    });
+                }
+            })
+            ->when($request->seller, function ($query) use ($request) {
+                $query->where('user_id', $request->seller);
+            })
+            ->when($request->category, function ($query) use ($request) {
+                $query->whereHas('categories', function ($query) use ($request) {
+                    $query->where('category_id', $request->category);
+                });
+            })
+            ->when($request->city, function ($query) use ($request) {
+                $query->where('city', $request->city);
+            })
+            ->when($request->initial_created_at, function ($query) use ($request) {
+                $query->whereDate('created_at', '>=', $request->initial_created_at);
+            })
+            ->when($request->final_created_at, function ($query) use ($request) {
+                $query->whereDate('created_at', '<=', $request->final_created_at);
+            })
+            ->when($request->initial_expire_at, function ($query) use ($request) {
+                $query->whereDate('expire_at', '>=', $request->initial_expire_at);
+            })
+            ->when($request->final_expire_at, function ($query) use ($request) {
+                $query->whereDate('expire_at', '<=', $request->final_expire_at);
+            })
             ->where(function ($query) {
                 if (Auth::user()->role === UserRoleEnum::Seller->value) {
                     $query->where('user_id', Auth::id());
@@ -49,8 +88,11 @@ class CompanyController extends Controller
             ->latest()
             ->paginate(50);
 
+        $sellers = User::select()->role(UserRoleEnum::Seller->value)->get();
+        $categories = Category::whereHas('companies')->where('status', true)->get();
+        $cities = Company::distinct()->orderBy('city', 'asc')->pluck('city')->toArray();
 
-        return view('companies.index', compact('companies'));
+        return view('companies.index', compact('companies', 'sellers', 'categories', 'cities'));
     }
 
     /**

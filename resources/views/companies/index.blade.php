@@ -10,6 +10,73 @@
 
     <x-search-bar />
 
+    <div class="max-w-10xl sm:px-6 lg:px-8 mt-5">
+        <div class="flex justify-between">
+            <form method="GET" class="flex flex-wrap gap-3 w-full">
+                <input type="hidden" name="search" value="{{ request()->search }}">
+
+                <x-form.select id="seller" name="seller" type="text" class="block" style="min-width: 250px" :value="request()->seller"
+                    autofocus autocomplete="seller">
+                    <option value="">Vendedor</option>
+                    @foreach ($sellers as $seller)
+                        <option value="{{ $seller->id }}" {{ request()->seller == $seller->id ? 'selected' : false }}>{{ $seller->name }}</option>
+                    @endforeach
+                </x-form.select>
+
+                <x-form.select id="category" name="category" type="text" class="block" style="min-width: 250px" :value="request()->category"
+                    autofocus autocomplete="category">
+                    <option value="">Categoria</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" {{ request()->category == $category->id ? 'selected' : false }}>{{ $category->name }}</option>
+                    @endforeach
+                </x-form.select>
+
+                <x-form.select id="city" name="city" type="text" class="block" style="min-width: 250px" :value="request()->city"
+                    autofocus autocomplete="city">
+                    <option value="">Cidade</option>
+                    @foreach ($cities as $city)
+                        <option value="{{ $city }}" {{ request()->city == $city ? 'selected' : false }}>{{ $city }}</option>
+                    @endforeach
+                </x-form.select>
+
+                <x-form.select id="status" name="status" type="text" class="block" style="min-width: 250px" :value="request()->status"
+                    autofocus autocomplete="status">
+                    <option value="">Status</option>
+                    <option value="1" {{ request()->status === '1' ? 'selected' : false }}>Ativo</option>
+                    <option value="0" {{ request()->status === '0' ? 'selected' : false }}>Inativo</option>
+                </x-form.select>
+
+                <x-form.select id="status_sell" name="status_sell" type="text" class="block" style="min-width: 250px" :value="request()->status_sell"
+                    autofocus autocomplete="status_sell">
+                    <option value="">Status de Venda</option>
+                    <option value="1" {{ request()->status_sell === '1' ? 'selected' : false }}>Ativo</option>
+                    <option value="0" {{ request()->status_sell === '0' ? 'selected' : false }}>Inativo</option>
+                </x-form.select>
+
+                <div class="flex flex-col">
+                    <label for="">Data de criação inicial</label>
+                    <x-form.input type="date" name="initial_created_at" :value="request()->initial_created_at" style="min-width: 250px" />
+                </div>
+                <div class="flex flex-col">
+                    <label for="">Data de criação final</label>
+                    <x-form.input type="date" name="final_created_at" :value="request()->final_created_at" style="min-width: 250px" />
+                </div>
+                <div class="flex flex-col">
+                    <label for="">Data de expiração inicial</label>
+                    <x-form.input type="date" name="initial_expire_at" :value="request()->initial_expire_at" style="min-width: 250px" />
+                </div>
+                <div class="flex flex-col">
+                    <label for="">Data de expiração final</label>
+                    <x-form.input type="date" name="final_expire_at" :value="request()->final_expire_at" style="min-width: 250px" />
+                </div>
+
+                <x-button>
+                    <i class="fas fa-search"></i>
+                </x-button>
+            </form>
+        </div>
+    </div>
+
     <div class="py-12">
         <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-dark-eval-1 overflow-hidden shadow-sm sm:rounded-lg">

@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Enums\UserRoleEnum;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Category;
 use App\Models\Company;
 use App\Models\Order;
 use App\Models\Pack;
+use App\Models\User;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -43,6 +45,36 @@ class OrderController extends Controller
             ->when($request->status, function ($query) use ($request) {
                 $query->where('status', $request->status);
             })
+            ->when($request->seller, function ($query) use ($request) {
+                $query->where('user_id', $request->seller);
+            })
+            ->when($request->payment_method, function ($query) use ($request) {
+                $query->where('payment_method', $request->payment_method);
+            })
+            ->when($request->category, function ($query) use ($request) {
+                $query->whereHas('company', function ($query) use ($request) {
+                    $query->whereHas('categories', function ($query) use ($request) {
+                        $query->where('category_id', $request->category);
+                    });
+                });
+            })
+            ->when($request->city, function ($query) use ($request) {
+                $query->whereHas('company', function ($query) use ($request) {
+                    $query->where('city', $request->city);
+                });
+            })
+            ->when($request->initial_approved_at, function ($query) use ($request) {
+                $query->whereDate('approved_at', '>=', $request->initial_approved_at);
+            })
+            ->when($request->final_approved_at, function ($query) use ($request) {
+                $query->whereDate('approved_at', '<=', $request->final_approved_at);
+            })
+            ->when($request->initial_expire_at, function ($query) use ($request) {
+                $query->whereDate('expire_at', '>=', $request->initial_expire_at);
+            })
+            ->when($request->final_expire_at, function ($query) use ($request) {
+                $query->whereDate('expire_at', '<=', $request->final_expire_at);
+            })
             ->where(function ($query) {
                 if (Auth::user()->role !== UserRoleEnum::Admin->value) {
                     $query->where('user_id', Auth::id());
@@ -51,7 +83,11 @@ class OrderController extends Controller
             ->latest()
             ->paginate(50);
 
-        return view('orders.index', compact('orders'));
+        $sellers = User::select()->role(UserRoleEnum::Seller->value)->get();
+        $categories = Category::whereHas('companies')->where('status', true)->get();
+        $cities = Company::distinct()->orderBy('city', 'asc')->pluck('city')->toArray();
+
+        return view('orders.index', compact('orders', 'sellers', 'categories', 'cities'));
     }
 
     /**
@@ -77,7 +113,7 @@ class OrderController extends Controller
             $validated['user_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
             $validated['uuid'] = Str::uuid();
 
-            $order = Order::create($validated);
+            Order::create($validated);
 
             DB::commit();
 

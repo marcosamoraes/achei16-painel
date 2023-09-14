@@ -43,6 +43,10 @@
 {{ config('app.name') }}
 @endif
 
+<div style="display: flex; justify-content: center">
+    <x-google-partner-img style="height: 100px" />
+</div>
+
 {{-- Subcopy --}}
 @isset($actionText)
 <x-slot:subcopy>

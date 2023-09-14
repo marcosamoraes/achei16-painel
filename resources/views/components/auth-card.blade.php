@@ -2,6 +2,10 @@
     <div>
         <a href="/">
             <x-application-logo class="w-full h-20" />
+
+            <div class="flex w-full justify-center">
+                <x-google-partner-img class="h-24" />
+            </div>
         </a>
     </div>
 

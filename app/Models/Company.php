@@ -43,6 +43,7 @@ class Company extends Model
         'ifood',
         'waze',
         'olx',
+        'google_street_view',
         'payment_methods',
         'image',
         'images',

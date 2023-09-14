@@ -362,6 +362,15 @@
 
                         <x-form.error :messages="$errors->get('olx')" />
                     </div>
+
+                    <div class="space-y-2">
+                        <x-form.label for="google_street_view" :value="__('Google Street View')" />
+
+                        <x-form.input id="google_street_view" name="google_street_view" type="text" class="block w-full"
+                            :value="old('google_street_view', $company->google_street_view)" autofocus autocomplete="google_street_view" />
+
+                        <x-form.error :messages="$errors->get('google_street_view')" />
+                    </div>
                 </div>
             </div>
 

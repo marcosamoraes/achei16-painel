@@ -25,6 +25,7 @@ class StoreOrderRequest extends FormRequest
             'company_id' => ['required', 'exists:companies,id'],
             'pack_id' => ['required', 'exists:packs,id'],
             'value' => ['required', 'numeric'],
+            'payment_method' => ['nullable', 'string'],
         ];
     }
 }

@@ -13,7 +13,7 @@
             >
                 @csrf
 
-                <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
+                <div class="mb-5 grid grid-cols-1 sm:grid-cols-4 gap-y-6 gap-x-4">
                     <div class="space-y-2">
                         <x-form.label
                             for="company_id"
@@ -90,6 +90,29 @@
                         </x-form.input-with-icon-wrapper>
 
                         <x-form.error :messages="$errors->get('value')" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <x-form.label for="payment_method" :value="__('Método de Pagamento')" />
+
+                        <x-form.select
+                            id="payment_method"
+                            name="payment_method"
+                            type="text"
+                            class="block w-full select2-multiple"
+                            autofocus
+                            autocomplete="payment_method"
+                        >
+                            <option value="">Selecione</option>
+                            <option value="dinheiro" {{ 'dinheiro' === old('payment_method') ? 'selected' : false }}>Dinheiro</option>
+                            <option value="pix" {{ 'pix' === old('payment_method') ? 'selected' : false }}>Pix</option>
+                            <option value="cartão de crédito" {{ 'cartão de crédito' === old('payment_method') ? 'selected' : false }}>Cartão de crédito</option>
+                            <option value="cartão de débito" {{ 'cartão de débito' === old('payment_method') ? 'selected' : false }}>Cartão de débito</option>
+                            <option value="boleto" {{ 'boleto' === old('payment_method') ? 'selected' : false }}>Boleto</option>
+                            <option value="transferência bancária" {{ 'transferência bancária' === old('payment_method') ? 'selected' : false }}>Transferência bancária</option>
+                        </x-form.select>
+
+                        <x-form.error :messages="$errors->get('payment_method')" />
                     </div>
                 </div>
 

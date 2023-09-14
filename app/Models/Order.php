@@ -21,6 +21,7 @@ class Order extends Model
         'user_id',
         'company_id',
         'pack_id',
+        'payment_method',
         'value',
         'status',
         'payment_code',

@@ -15,6 +15,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
 use App\Http\Enums\UserRoleEnum;
+use App\Models\User;
+use App\Notifications\ClientCreated;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,5 +66,9 @@ Route::middleware('auth')->group(function () use ($admin, $seller, $client) {
 });
 
 Route::get('/payments/webhook', [OrderController::class, 'paymentWebhook'])->name('webhook');
+
+Route::get('/mailable', function () {
+    return (new ClientCreated('123456'))->toMail(User::first());
+});
 
 require __DIR__ . '/auth.php';

@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Contact;
+use App\Models\Order;
+use App\Models\Review;
+use App\Observers\ContactObserver;
+use App\Observers\OrderObserver;
+use App\Observers\ReviewObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,7 +31,9 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Order::observe(OrderObserver::class);
+        Contact::observe(ContactObserver::class);
+        Review::observe(ReviewObserver::class);
     }
 
     /**

@@ -56,6 +56,7 @@ class UpdateCompanyRequest extends FormRequest
             'ifood' => 'nullable|string|max:255',
             'waze' => 'nullable|string|max:255',
             'olx' => 'nullable|string|max:255',
+            'google_street_view' => 'nullable|string|max:255',
             'payment_methods' => 'nullable|string|max:255',
             'image' => 'nullable|file',
             'images' => 'nullable|array',
