@@ -50,6 +50,6 @@ class ReviewObserver
 
     private function sendNewReviewToCompany(Review $review): void
     {
-        Notification::send($review->user, new NewReviewToCompany());
+        Notification::send($review->company->client->user, new NewReviewToCompany());
     }
 }
