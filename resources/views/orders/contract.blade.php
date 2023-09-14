@@ -47,7 +47,7 @@
                     </div>
                     <div class="px-4 py-6 sm:px-0">
                         <div class="border-2 border-gray-300 rounded-lg p-4 w-full">
-                            <p class="text-sm text-gray-600"><b>CONTRATADA: Leonardo Tosetto Legal, CPF 374.947.196-30 inscrita no CNPJ 18.752.155/0001-40, situado na rua Ana Rita Camacho, 195, Vila Elmaz, São José do Rio Preto, São Paulo.</b></p><br/>
+                            <p class="text-sm text-gray-600"><b>CONTRATADA: ACHEI 16, inscrita no CNPJ 18.752.155/0001-40 representada por Leonardo Tosetto Leal, CPF 374.947.196-30, situado na rua Ana Rita Camacho, 195, Vila Elmaz, São José do Rio Preto, São Paulo.</b></p><br/>
                             <p class="text-sm text-gray-600"><b>CONTRATANTE: {{ $order->company->client->user->name }}, inscrita no {{ strlen($order->company->client->cpf_cnpj) > 14 ? 'CNPJ' : 'CPF' }} {{ $order->company->client->cpf_cnpj }}, situado na rua {{ $order->company->client->full_address }}.</b></p><br/>
                             <p class="text-sm text-gray-600"><b>VALOR: R${{ number_format($order->value, 2, ',', '.') }}</b></p><br/>
                             <p class="text-sm text-gray-600">{!! $order->pack->contract->description !!}</p>

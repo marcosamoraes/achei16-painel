@@ -58,7 +58,11 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $clients = Client::all();
+        $clients = Client::where(function ($query) {
+            if (Auth::user()->role === UserRoleEnum::Seller->value) {
+                $query->where('user_id', Auth::id());
+            }
+        })->get();
         $categories = Category::all();
         return view('companies.create', compact('clients', 'categories'));
     }
@@ -129,7 +133,11 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        $clients = Client::all();
+        $clients = Client::where(function ($query) {
+            if (Auth::user()->role === UserRoleEnum::Seller->value) {
+                $query->where('user_id', Auth::id());
+            }
+        })->get();
         $categories = Category::all();
         return view('companies.edit', compact('company', 'clients', 'categories'));
     }

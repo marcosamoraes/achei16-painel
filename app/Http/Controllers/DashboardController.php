@@ -129,8 +129,7 @@ class DashboardController extends Controller
         $countContacts = Contact::where('user_id', auth()->id())->count();
 
         $activeCompanies = Company::where('client_id', $client->id)->approved()->get();
-
-        $activeCompanies->map(fn ($company) => $company->daysLeft = $company->lastOrderApproved?->expire_at?->diffInDays(Carbon::now()));
+        $activeCompanies->map(fn ($company) => $company->expireAt = $company->lastOrderApproved?->expire_at?->format('d/m/Y'));
 
         return view('dashboard', compact('countVisits', 'countContacts', 'activeCompanies'));
     }

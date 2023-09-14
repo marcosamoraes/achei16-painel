@@ -286,8 +286,8 @@
                                     <div class="flex-auto p-4">
                                         <div class="flex flex-wrap">
                                             <div class="relative w-full pr-4 max-w-full flex-grow flex-1">
-                                                <h5 class="text-black uppercase font-bold text-xs">Tempo de Contrato Restante {{ $activeCompanies->count() > 1 ? "- {$activeCompany->name}" : false }}</h5><span
-                                                    class="font-semibold text-xl {{ $activeCompany->daysLeft <= 15 ? 'text-red-500' : 'text-black' }}">{{ $activeCompany->daysLeft }} dias</span>
+                                                <h5 class="text-black uppercase font-bold text-xs">Seu Contrato Vence Em {{ $activeCompanies->count() > 1 ? "- {$activeCompany->name}" : false }}</h5><span
+                                                    class="font-semibold text-xl text-black">{{ $activeCompany->expireAt }}</span>
                                             </div>
                                             <div class="relative w-auto pl-4 flex-initial">
                                                 <div
