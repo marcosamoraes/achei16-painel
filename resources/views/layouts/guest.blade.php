@@ -35,7 +35,7 @@
         </div>
 
         <div class="fixed top-10 right-10">
-            <x-button
+            {{-- <x-button
                 type="button"
                 icon-only
                 variant="secondary"
@@ -53,7 +53,7 @@
                     aria-hidden="true"
                     class="w-6 h-6"
                 />
-            </x-button>
+            </x-button> --}}
         </div>
     </div>
 </body>

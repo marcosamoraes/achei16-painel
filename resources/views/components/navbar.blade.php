@@ -8,7 +8,7 @@
     }">
 
     <div class="flex items-center gap-3">
-        <x-button
+        {{-- <x-button
             type="button"
             class="md:hidden"
             icon-only
@@ -27,11 +27,11 @@
                 aria-hidden="true"
                 class="w-6 h-6"
             />
-        </x-button>
+        </x-button> --}}
     </div>
 
     <div class="flex items-center gap-3">
-        <x-button
+        {{-- <x-button
             type="button"
             class="hidden md:inline-flex"
             icon-only
@@ -50,7 +50,7 @@
                 aria-hidden="true"
                 class="w-6 h-6"
             />
-        </x-button>
+        </x-button> --}}
 
         <x-dropdown align="right" width="48">
             <x-slot name="trigger">
