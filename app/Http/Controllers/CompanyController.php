@@ -29,15 +29,15 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $companies = Company::when($request->search, function ($query) use ($request) {
-                $query->whereHas('client', function ($query) use ($request) {
-                    $query->whereHas('user', function ($query) use ($request) {
-                        $query->where('name', 'like', "%{$request->search}%");
-                        $query->orWhere('email', 'like', "%{$request->search}%");
-                    });
+            $query->whereHas('client', function ($query) use ($request) {
+                $query->whereHas('user', function ($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->search}%");
+                    $query->orWhere('email', 'like', "%{$request->search}%");
                 });
-                $query->orWhere('name', 'like', "%{$request->search}%");
-                $query->orWhere('id', $request->search);
-            })
+            });
+            $query->orWhere('name', 'like', "%{$request->search}%");
+            $query->orWhere('id', $request->search);
+        })
             ->when($request->filled('status'), function ($query) use ($request) {
                 $query->where('status', $request->status);
             })
@@ -102,7 +102,7 @@ class CompanyController extends Controller
     {
         $clients = Client::where(function ($query) {
             if (Auth::user()->role === UserRoleEnum::Seller->value) {
-                $query->where('user_id', Auth::id());
+                $query->where('seller_id', Auth::id());
             }
         })->get();
         $categories = Category::all();
@@ -177,7 +177,7 @@ class CompanyController extends Controller
     {
         $clients = Client::where(function ($query) {
             if (Auth::user()->role === UserRoleEnum::Seller->value) {
-                $query->where('user_id', Auth::id());
+                $query->where('seller_id', Auth::id());
             }
         })->get();
         $categories = Category::all();

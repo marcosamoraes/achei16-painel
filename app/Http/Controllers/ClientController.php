@@ -34,11 +34,11 @@ class ClientController extends Controller
                 $query->orWhere('id', $request->search);
             });
         })
-        ->where(function ($query) {
-            if (Auth::user()->role === UserRoleEnum::Seller->value) {
-                $query->where('user_id', Auth::id());
-            }
-        })->latest()->paginate(50);
+            ->where(function ($query) {
+                if (Auth::user()->role === UserRoleEnum::Seller->value) {
+                    $query->where('seller_id', Auth::id());
+                }
+            })->latest()->paginate(50);
 
         return view('clients.index', compact('clients'));
     }
@@ -67,6 +67,8 @@ class ClientController extends Controller
             ]);
 
             $validated['client']['user_id'] = $user->id;
+
+            $validated['client']['seller_id'] = $request->user()->role === UserRoleEnum::Seller->value ? $request->user()->id : null;
 
             Client::create($validated['client']);
 
