@@ -264,7 +264,6 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         $company->delete();
-        $company->user->update(['status' => 0]);
         Alert::toast('Empresa deletada com sucesso.', 'success');
         return back();
     }
