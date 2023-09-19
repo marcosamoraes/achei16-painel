@@ -29,15 +29,15 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
         $companies = Company::when($request->search, function ($query) use ($request) {
-            $query->whereHas('client', function ($query) use ($request) {
-                $query->whereHas('user', function ($query) use ($request) {
-                    $query->where('name', 'like', "%{$request->search}%");
-                    $query->orWhere('email', 'like', "%{$request->search}%");
+                $query->whereHas('client', function ($query) use ($request) {
+                    $query->whereHas('user', function ($query) use ($request) {
+                        $query->where('name', 'like', "%{$request->search}%");
+                        $query->orWhere('email', 'like', "%{$request->search}%");
+                    });
                 });
-            });
-            $query->orWhere('name', 'like', "%{$request->search}%");
-            $query->orWhere('id', $request->search);
-        })
+                $query->orWhere('name', 'like', "%{$request->search}%");
+                $query->orWhere('id', $request->search);
+            })
             ->when($request->filled('status'), function ($query) use ($request) {
                 $query->where('status', $request->status);
             })
@@ -119,15 +119,17 @@ class CompanyController extends Controller
 
             $validated = $request->validated();
 
-            $webp = Webp::make($validated['image']);
-            $fileName = 'companies/' . uniqid() . '.webp';
+            if (isset($validated['image'])) {
+                $webp = Webp::make($validated['image']);
+                $fileName = 'companies/' . uniqid() . '.webp';
 
-            if (!file_exists(public_path('storage/companies'))) {
-                mkdir(public_path('storage/companies'), 0777, true);
-            }
+                if (!file_exists(public_path('storage/companies'))) {
+                    mkdir(public_path('storage/companies'), 0777, true);
+                }
 
-            if ($webp->save(public_path('storage/' . $fileName))) {
-                $validated['image'] = $fileName;
+                if ($webp->save(public_path('storage/' . $fileName))) {
+                    $validated['image'] = $fileName;
+                }
             }
 
             if (isset($validated['images']) && count($validated['images']) > 0) {

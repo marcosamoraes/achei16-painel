@@ -197,11 +197,11 @@
 
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
                     <div class="space-y-2">
-                        <x-form.label for="cep" :value="__('CEP')" />
+                        <x-form.label for="cep" :value="__('CEP *')" />
 
                         <x-form.input id="cep" name="cep" type="text" class="block w-full"
                             :value="old('cep')" x-mask="99999-999" autofocus autocomplete="cep"
-                            x-on:keyup="getAddressByCep()" x-model="cep" x-ref="cep" />
+                            x-on:keyup="getAddressByCep()" x-model="cep" x-ref="cep" required />
 
                         <x-form.error :messages="$errors->get('cep')" />
                     </div>
@@ -209,19 +209,19 @@
 
                 <div class="mb-5 grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-4">
                     <div class="space-y-2">
-                        <x-form.label for="address" :value="__('Endereço')" />
+                        <x-form.label for="address" :value="__('Endereço *')" />
 
                         <x-form.input id="address" name="address" type="text" class="block w-full"
-                            :value="old('address')" autofocus autocomplete="address" x-model="address" />
+                            :value="old('address')" autofocus autocomplete="address" x-model="address" required />
 
                         <x-form.error :messages="$errors->get('address')" />
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="number" :value="__('Número')" />
+                        <x-form.label for="number" :value="__('Número *')" />
 
                         <x-form.input id="number" name="number" type="text" class="block w-full"
-                            :value="old('number')" autofocus autocomplete="number" x-model="number" />
+                            :value="old('number')" autofocus autocomplete="number" x-model="number" required />
 
                         <x-form.error :messages="$errors->get('number')" />
                     </div>
@@ -236,28 +236,28 @@
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="neighborhood" :value="__('Bairro')" />
+                        <x-form.label for="neighborhood" :value="__('Bairro *')" />
 
                         <x-form.input id="neighborhood" name="neighborhood" type="text" class="block w-full"
-                            :value="old('neighborhood')" autofocus autocomplete="neighborhood" x-model="neighborhood" />
+                            :value="old('neighborhood')" autofocus autocomplete="neighborhood" x-model="neighborhood" required />
 
                         <x-form.error :messages="$errors->get('neighborhood')" />
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="city" :value="__('Cidade')" />
+                        <x-form.label for="city" :value="__('Cidade *')" />
 
                         <x-form.input id="city" name="city" type="text" class="block w-full"
-                            :value="old('city')" autofocus autocomplete="city" x-model="city" />
+                            :value="old('city')" autofocus autocomplete="city" x-model="city" required />
 
                         <x-form.error :messages="$errors->get('city')" />
                     </div>
 
                     <div class="space-y-2">
-                        <x-form.label for="state" :value="__('Estado')" />
+                        <x-form.label for="state" :value="__('Estado *')" />
 
                         <x-form.input id="state" name="state" type="text" class="block w-full"
-                            :value="old('state')" autofocus autocomplete="state" x-model="state" />
+                            :value="old('state')" autofocus autocomplete="state" x-model="state" required />
 
                         <x-form.error :messages="$errors->get('state')" />
                     </div>
