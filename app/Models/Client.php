@@ -55,6 +55,14 @@ class Client extends Model
         return $this->hasMany(Company::class);
     }
 
+    /**
+     * Get the seller that owns the client.
+     */
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
+
     protected function totalVisits(): Attribute
     {
         return Attribute::get(fn () => $this->companies->sum('visits'));

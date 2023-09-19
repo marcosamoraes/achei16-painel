@@ -13,7 +13,7 @@
                 <div class="flex flex-wrap">
                     @if (auth()->user()->role === 'admin' || auth()->user()->role === 'seller')
                         <div class="w-full mb-10 px-4">
-                            <form class="flex gap-5">
+                            <form class="flex flex-wrap gap-5">
                                 <div>
                                     <label class="block uppercase text-xs font-bold mb-2"
                                         for="initial_date">Data Inicial</label>

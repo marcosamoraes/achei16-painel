@@ -95,7 +95,11 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $companies = Company::all();
+        $companies = Company::where(function ($query) {
+            if (Auth::user()->role === UserRoleEnum::Seller->value) {
+                $query->where('user_id', Auth::id());
+            }
+        })->get();
         $packs = Pack::all();
         return view('orders.create', compact('companies', 'packs'));
     }

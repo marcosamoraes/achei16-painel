@@ -17,6 +17,7 @@ class OrderObserver
     public function created(Order $order): void
     {
         $this->sendNewSaleToCompany($order);
+        $this->sendNewSaleToAdmin($order);
     }
 
     /**
@@ -24,9 +25,7 @@ class OrderObserver
      */
     public function updated(Order $order): void
     {
-        if ($order->isDirty('status') && $order->status === 'approved') {
-            $this->sendNewSaleToAdmin($order);
-        }
+        //
     }
 
     /**
