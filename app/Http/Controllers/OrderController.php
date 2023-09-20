@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Company;
 use App\Models\Order;
 use App\Models\Pack;
+use App\Models\Seller;
 use App\Models\User;
 use Exception;
 use GuzzleHttp\Client;
@@ -83,7 +84,7 @@ class OrderController extends Controller
             ->latest()
             ->paginate(50);
 
-        $sellers = User::select()->role(UserRoleEnum::Seller->value)->get();
+        $sellers = Seller::all();
         $categories = Category::whereHas('companies')->where('status', true)->get();
         $cities = Company::distinct()->orderBy('city', 'asc')->pluck('city')->toArray();
 

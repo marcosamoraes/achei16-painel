@@ -17,7 +17,7 @@
                     autofocus autocomplete="seller">
                     <option value="">Vendedor</option>
                     @foreach ($sellers as $seller)
-                        <option value="{{ $seller->id }}" {{ request()->seller === $seller->id ? 'selected' : false }}>{{ $seller->name }}</option>
+                        <option value="{{ $seller->user->id }}" {{ request()->seller == $seller->user_id ? 'selected' : false }}>{{ $seller->user->name }}</option>
                     @endforeach
                 </x-form.select>
 
