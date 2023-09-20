@@ -133,10 +133,9 @@
                             autofocus
                             autocomplete="status"
                         >
-                            <option value="pending">Pendente</option>
-                            <option value="approved">Pago</option>
-                            <option value="canceled">Cancelado</option>
-                            <option value="reimbursed">Reembolsado</option>
+                            <option value="pending" {{ old('status', $order->status) === 'pending' ? 'selected' : false }}>Pendente</option>
+                            <option value="approved" {{ old('status', $order->status) === 'approved' ? 'selected' : false }}>Aprovado</option>
+                            <option value="canceled" {{ old('status', $order->status) === 'canceled' ? 'selected' : false }}>Cancelado</option>
                         </x-form.select>
 
                         <x-form.error :messages="$errors->get('status')" />
