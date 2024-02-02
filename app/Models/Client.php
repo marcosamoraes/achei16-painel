@@ -44,7 +44,7 @@ class Client extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -60,7 +60,7 @@ class Client extends Model
      */
     public function seller()
     {
-        return $this->belongsTo(User::class, 'seller_id')->withTrashed();
+        return $this->belongsTo(User::class, 'seller_id');
     }
 
     protected function totalVisits(): Attribute
