@@ -25,7 +25,7 @@ class StoreClientRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'client.*' => 'nullable',
-            'client.cpf_cnpj' => 'nullable|string',
+            'client.cpf_cnpj' => 'nullable|string|unique:clients,cpf_cnpj',
             'client.phone' => 'nullable|string|max:20',
             'client.phone2' => 'nullable|string|max:20',
             'client.cep' => 'nullable|string|max:9',

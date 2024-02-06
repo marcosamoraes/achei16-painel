@@ -12,6 +12,7 @@ use App\Notifications\ClientCreated;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -57,6 +58,8 @@ class ClientController extends Controller
     public function store(StoreClientRequest $request)
     {
         try {
+            DB::beginTransaction();
+
             $validated = $request->validated();
 
             $password = Str::random(8);
@@ -74,9 +77,12 @@ class ClientController extends Controller
 
             $user->notify(new ClientCreated($password));
 
+            DB::commit();
+
             Alert::toast('Cliente cadastrado com sucesso.', 'success');
             return Redirect::route('clients.index');
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e->getMessage());
             Alert::toast('Falha ao cadastrar cliente.', 'error');
             return back()->withInput();
