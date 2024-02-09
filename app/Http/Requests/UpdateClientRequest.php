@@ -25,7 +25,7 @@ class UpdateClientRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $this->email . ',email',
             'client.*' => 'nullable',
-            'client.cpf_cnpj' => 'nullable|string|unique:clients,cpf_cnpj,' . $this->client->cpf_cnpj . ',cpf_cnpj',
+            'client.cpf_cnpj' => 'nullable|string|unique:clients,cpf_cnpj,' . $this->route('client')->cpf_cnpj . ',cpf_cnpj',
             'client.phone' => 'nullable|string|max:20',
             'client.phone2' => 'nullable|string|max:20',
             'client.cep' => 'nullable|string|max:9',
